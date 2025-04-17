@@ -12,13 +12,14 @@
 #' @param ... additional parameters, currently not in use
 #' 
 #' @examples
-#' extract_pkg_name('<u>**`R`**</u> package <u>**`patchwork`**</u>')
-#' extract_pkg_name('<u>**`R`**</u> package <u>**`tools`**</u>') # 'tools' is a base-package
-#' extract_pkg_name(c('[R] package [patchwork]', '[ggplot2]'), pattern = '(?<=\\[)(.*?)(?=\\])')
+#' '<u>**`R`**</u> package <u>**`patchwork`**</u>' |> extract_pkg_name()
+#' '<u>**`R`**</u> package <u>**`stats`**</u>' |> extract_pkg_name() # 'stats' is a base-package
+#' c('[R] package [patchwork]', '[ggplot2]') |> extract_pkg_name(pattern = '(?<=\\[)(.*?)(?=\\])')
 #' # exception handling
-#' extract_pkg_name(character())
-#' extract_pkg_name('')
-#' extract_pkg_name(NA_character_)
+#' character() |> extract_pkg_name()
+#' '' |> extract_pkg_name()
+#' NA_character_ |> extract_pkg_name()
+#' @keywords internal
 #' @importFrom stringi stri_extract_all_regex
 #' @export
 extract_pkg_name <- function(

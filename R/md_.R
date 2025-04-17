@@ -44,8 +44,8 @@
 #' @name md_
 #' @importFrom htest.tzh md_.htest_array
 #' @importFrom mDFR md_.maxT
-#' @importFrom psych.tzh md_.fa plot_fa_
-#' @importFrom rpart.tzh md_.rpart prp_
+#' @importFrom psych.tzh md_.fa
+#' @importFrom rpart.tzh md_.rpart
 #' @export
 md_ <- function(x, ...) {
   if (!length(x)) return(invisible())
