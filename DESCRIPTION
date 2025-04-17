@@ -6,11 +6,7 @@ Date: 2024-01-15
 Description: Markdown lines for common R objects.
 License: GPL-2
 Encoding: UTF-8
-Imports: rmarkdown, ggplot2 (== 3.5.2), stringi (== 1.8.7), 
-  htest.tzh,
-  mDFR,
-  psych.tzh,
-  rpart.tzh
+Imports: rmarkdown, ggplot2 (== 3.5.2), stringi (== 1.8.7)
 Authors@R: c(person(given = "Tingting", family = "Zhan", role = c("aut", "cre"), email = c("tingtingzhan@gmail.com")))
 Language: en-US
 Roxygen: list(markdown = TRUE)
