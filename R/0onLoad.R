@@ -1,0 +1,46 @@
+
+
+# ?ggplot2::theme_minimal
+
+#' @importFrom ggplot2 theme_set theme_bw theme
+#' @importFrom ggplot2 element_blank element_rect
+#' @importFrom ggplot2 %+replace%
+#' @importFrom grid unit
+.onLoad <- function(libname, pkgname = 'rmd.tzh') {
+  
+  # library(ggplot2) # R CMD check: Note: Package startup functions should not change the search path.
+  
+  theme_set(
+    theme_bw(
+      base_size = 11, 
+      base_family = 'Arial Unicode MS', 
+      base_line_size = 11/22, 
+      base_rect_size = 11/22
+    ) %+replace% 
+      theme(
+        axis.ticks = element_blank(), 
+        #legend.background = element_blank(), 
+        legend.background = element_rect(color = 'grey95'),
+        #legend.key.spacing.y = unit(.015, units = 'npc'),
+        legend.key.spacing.y = unit(.02, units = 'npc'),
+        legend.key = element_blank(), 
+        panel.background = element_blank(), 
+        panel.border = element_blank(), 
+        strip.background = element_blank(), 
+        plot.background = element_blank(), 
+        complete = TRUE
+      )
+  )
+  
+}
+
+
+# theme(
+#  legend.position = 'inside',
+#  legend.position.inside = c(.8, .65),
+#  legend.background = element_rect(color = 'grey95'),
+#  legend.key.spacing.y = grid::unit(.05, units = 'npc')
+# )
+# 
+
+
