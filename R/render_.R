@@ -62,6 +62,7 @@ render_ <- function(
     'opts_chunk$set(echo = FALSE)',
     'library(flextable)', # e.g., flextable::as_flextable
     'library(flextable.tzh)', # e.g. flextable.tzh::as_flextable.array
+    'library(scales.tzh)',
     '```'
   )
 
