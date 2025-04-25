@@ -113,9 +113,13 @@ list(
     with(expr = pairwise.t.test(Ozone, Month, pool.sd = FALSE, p.adj = 'none'))
 ) |> render_(file = 'pairwise.htest')
 
-library(survival.tzh); list(
- '`patchwork`' = subset_ggKM(os ~ ph.ecog, subset = list(All = TRUE, Female = (sex == 'Female')), 
-    data = lung2)
+library(patchwork)
+# ?patchwork::`patchwork-package`
+library(ggplot2)
+p1 = ggplot(mtcars) + geom_point(aes(mpg, disp))
+p2 = ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+list(
+ '`patchwork`' = p1 + p2
 ) |> render_(file = 'patchwork')
 
 library(grid.tzh); list(
