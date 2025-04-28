@@ -35,18 +35,13 @@ Tingting Zhan doesn't want to define \code{sort_by.citation()}, which sounds a l
 }
 \examples{
 'stringi' |> citation() # using doi field, correct
+
 'texreg' |> citation() # doi in url field, not good!
-
-# \pkg{texreg} has textVersion hard-coded in CITATION file
-# therefore 'textVersion' cannot be updated
-'texreg' |> citation() |> url2doi() # only a partial fix 
-
-'robslopes' |> citation() |> toBibtex()
-'robslopes' |> citation() |> url2doi() |> toBibtex() # complete fix!
+'texreg' |> citation() |> url2doi()
 'kernlab' |> citation()
 'kernlab' |> citation() |> dropManual()
-'lava' |> citation()
-'lava' |> citation() |> sortYear()
+'rmarkdown' |> citation()
+'rmarkdown' |> citation() |> sortYear()
 }
 \seealso{
 \code{utils:::`[.bibentry`}

@@ -23,7 +23,7 @@ in the following ways.
 }
 }
 \examples{
-'stringi' |> citation() |> bibentry2text()
+'texreg' |> citation() |> format(style = 'text')
 'texreg' |> citation() |> bibentry2text()
 }
 \keyword{internal}
