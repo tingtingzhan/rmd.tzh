@@ -61,7 +61,7 @@ render_ <- function(
     'library(knitr)',
     'opts_chunk$set(echo = FALSE)',
     'library(flextable)', # e.g., flextable::as_flextable
-    'library(flextable.tzh)', # e.g. flextable.tzh::as_flextable.array
+    'library(flextable.tzh)', # e.g. flextable.tzh::as_flextable.matrix
     'library(scales.tzh)',
     '```'
   )

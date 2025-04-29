@@ -5,7 +5,7 @@
 \name{md_}
 \alias{md_}
 \alias{md_.data.frame}
-\alias{md_.array}
+\alias{md_.matrix}
 \alias{md_.list}
 \alias{md_.numeric}
 \alias{md_.character}
@@ -29,7 +29,7 @@ md_(x, ...)
 
 \method{md_}{data.frame}(x, xnm, ...)
 
-\method{md_}{array}(x, xnm, ...)
+\method{md_}{matrix}(x, xnm, ...)
 
 \method{md_}{list}(x, xnm, ...)
 

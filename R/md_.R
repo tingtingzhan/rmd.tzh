@@ -49,12 +49,12 @@ md_.data.frame <- function(x, xnm, ...) {
 #' @examples
 #' list('`matrix`' = VADeaths) |> render_(file = 'matrix')
 #' 
-#' @export md_.array
+#' @export md_.matrix
 #' @export
-md_.array <- function(x, xnm, ...) {
+md_.matrix <- function(x, xnm, ...) {
   return(c(
     '```{r}',
-    paste0('as_flextable.array(', xnm, ')'), # 3-dimension not working well now!!
+    paste0('as_flextable.matrix(', xnm, ')'), # 3-dimension not working well now!!
     '```', 
     '<any-text>'
   ))
