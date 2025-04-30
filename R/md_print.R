@@ -75,8 +75,8 @@ md_.power.htest <- md_print_ # md_print0; either okay
 #' @examples
 #' library(flextable); library(reactable); library(plotly); 
 #' list(
-#'  '`flextable::flextable`' = flextable(mtcars),
-#'  '`reactable::reactable`, inherits from `htmlwidget`' = reactable(iris),
+#'  '`flextable::flextable`' = Formaldehyde |> flextable(),
+#'  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable(),
 #'  '`htmlwidget`' = list(
 #'    plot_ly(economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
 #'    plot_ly(z = ~volcano, type = "surface")

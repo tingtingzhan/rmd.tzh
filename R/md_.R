@@ -31,14 +31,14 @@ md_ <- function(x, ...) {
 
 #' @rdname md_
 #' @examples
-#' list('`data.frame`' = swiss) |> render_(file = 'data.frame')
+#' list('`data.frame`' = Formaldehyde) |> render_(file = 'data.frame')
 #' 
 #' @export md_.data.frame
 #' @export
 md_.data.frame <- function(x, xnm, ...) {
   return(c(
     '```{r}',
-    paste0('as_flextable_dataframe(', xnm, ')'),
+    xnm |> sprintf(fmt = '%s |> format4flextable() |> flextable() |> autofit(part = \'all\')'),
     '```', 
     '<any-text>'
   ))
