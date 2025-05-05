@@ -4,7 +4,10 @@ md_grid <- function(x, xnm, ...) {
   return(c(
     attr(x, which = 'text', exact = TRUE),
     '\n',
-    '```{r}', # let \pkg{grid} figure out the width and height!!!
+    '```{r}', 
+    # let \pkg{grid} does not figure out the width and height very perfectly
+    (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
+    (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
     # 'grid::grid.newpage()', # no need!!
     sprintf(fmt = '%s |> grid::grid.draw()', xnm), 
     # ?grid:::grid.draw.gList
