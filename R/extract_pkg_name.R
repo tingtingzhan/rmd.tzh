@@ -61,6 +61,7 @@ extract_pkg_name <- function(
 #' 
 #' @keywords internal
 #' @importFrom stats getCall
+#' @importFrom utils getAnywhere
 #' @export
 pkg_text <- function(x) {
   
