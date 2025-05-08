@@ -20,6 +20,9 @@ extract_pkg_name(
 \description{
 Extract package name(s) from a \link[base]{character} \link[base]{vector}
 }
+\note{
+Note of function names \code{pkgload::pkg_name} and \code{pkgbuild:::pkg_name}.
+}
 \examples{
 '<u>**`R`**</u> package <u>**`patchwork`**</u>' |> extract_pkg_name()
 '<u>**`R`**</u> package <u>**`stats`**</u>' |> extract_pkg_name() # 'stats' is a base-package

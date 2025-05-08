@@ -11,6 +11,9 @@
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
+#' @note
+#' Note of function names `pkgload::pkg_name` and `pkgbuild:::pkg_name`.
+#' 
 #' @examples
 #' '<u>**`R`**</u> package <u>**`patchwork`**</u>' |> extract_pkg_name()
 #' '<u>**`R`**</u> package <u>**`stats`**</u>' |> extract_pkg_name() # 'stats' is a base-package
@@ -46,3 +49,54 @@ extract_pkg_name <- function(
   ))
   
 }
+
+
+
+#' @title Text for Package to Create an R Object
+#' 
+#' @param x an R object
+#' 
+#' @returns 
+#' Function [pkg_text()] returns a \link[base]{character} scalar.
+#' 
+#' @keywords internal
+#' @importFrom stats getCall
+#' @export
+pkg_text <- function(x) {
+  
+  if (isS4(x)) {
+    return(x |> 
+             class() |> 
+             attr(which = 'package', exact = TRUE) |> 
+             sprintf(fmt = '<u>**`R`**</u> package <u>**`%s`**</u>'))
+  } 
+  
+  f <- getCall(x)[[1L]]
+  pkg <- tryCatch(expr = {
+    f |>
+      eval() |> # function call could be un-exported, e.g., nlme:::lme.formula, and err
+      environment() |>
+      getNamespaceName()
+  }, error = \(e) {
+    aw <- f |>
+      as.character() |>
+      getAnywhere()
+    if (length(aw$where) > 1L) stop('really shouldnt happen...')
+    (aw$where) |>
+      gsub(pattern = '^namespace\\:', replacement = '')
+  })
+  
+  # utils::installed.packages(priority = 'base') |> rownames() 
+  # also, RStudio do not have a delete button for base-packages
+  if (pkg %in% c('base', 'compiler', 'datasets', 'graphics', 'grDevices', 'grid', 'methods', 'parallel', 'splines', 'stats', 'stats4', 'tcltk', 'tools', 'utils')) {
+    return('<u>**`R`**</u>')
+  } 
+  
+  pkg |> 
+    sprintf(fmt = '<u>**`R`**</u> package <u>**`%s`**</u>')
+  
+}
+
+
+
+
