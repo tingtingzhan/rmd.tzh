@@ -8,7 +8,9 @@
 #' @importFrom grid unit
 .onLoad <- function(libname, pkgname = 'rmd.tzh') {
   
-  # library(ggplot2) # R CMD check: Note: Package startup functions should not change the search path.
+  Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
+  # https://stackoverflow.com/questions/63613301/r-cmd-check-note-unable-to-verify-current-time
+  # to disable "checking for future file timestamps" in R Check
   
   theme_set(
     theme_bw(
