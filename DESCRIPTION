@@ -2,7 +2,7 @@ Package: rmd.tzh
 Type: Package
 Title: Markdown Lines for Common R Objects
 Version: 0.1.0.9000
-Date: 2024-01-15
+Date: 2025-05-07
 Description: Markdown lines for common R objects.
 License: GPL-2
 Encoding: UTF-8
