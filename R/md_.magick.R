@@ -4,8 +4,8 @@
 #' @rdname md_
 #' 
 #' @examples
-#' library(magick); list(
-#'  '`magick-image`' = 'https://jeroen.github.io/images/frink.png' |> image_read()
+#' list(
+#'  '`magick-image`' = 'https://jeroen.github.io/images/frink.png' |> magick::image_read()
 #' ) |> render_(file = 'magick')
 #' 
 #' @export `md_.magick-image`

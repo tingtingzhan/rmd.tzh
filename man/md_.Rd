@@ -101,8 +101,8 @@ list(
  stats = 'Linear regression by <u>**`R`**</u> package <u>**`stats`**</u>.'
 ) |> render_(file = 'bibentry')
 
-library(magick); list(
- '`magick-image`' = 'https://jeroen.github.io/images/frink.png' |> image_read()
+list(
+ '`magick-image`' = 'https://jeroen.github.io/images/frink.png' |> magick::image_read()
 ) |> render_(file = 'magick')
 
 list(
@@ -122,8 +122,8 @@ list(
  '`patchwork`' = p1 + p2
 ) |> render_(file = 'patchwork')
 
-library(grid.tzh); list(
-  '`venn`' = venn(list(A = state.name[1:20], B = state.name[15:30]))
+list(
+  '`venn`' = grid.tzh::venn(list(A = state.name[1:20], B = state.name[15:30]))
 ) |> render_(file = 'gList')
 
 library(lattice); Depth = equal.count(quakes$depth, number=8, overlap=.1)
@@ -139,17 +139,16 @@ list(
 library(ggplot2); list(
   '`htest`' = t.test(mpg ~ am, data = mtcars),
   '`power.htest`' = power.t.test(power = .90, delta = 1),
-  '`ggplot2::ggplot`' = ggplot(mtcars, aes(wt, mpg)) + geom_point(),
+  '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
   '`GGally::ggmatrix`' = GGally::ggpairs(swiss, columns = c(1:2, 6))
 ) |> render_(file = 'Explicit Print')
 
-library(flextable); library(reactable); library(plotly); 
 list(
- '`flextable::flextable`' = Formaldehyde |> flextable(),
- '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable(),
+ '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
+ '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
  '`htmlwidget`' = list(
-   plot_ly(economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
-   plot_ly(z = ~volcano, type = "surface")
+   plotly::plot_ly(ggplot2::economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
+   plotly::plot_ly(z = ~volcano, type = "surface")
  )
 ) |> render_(file = 'Do Not Say Print')
 

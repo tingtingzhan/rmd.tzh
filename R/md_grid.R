@@ -30,8 +30,8 @@ md_grid <- function(x, xnm, ...) {
 
 #' @rdname md_
 #' @examples
-#' library(grid.tzh); list(
-#'   '`venn`' = venn(list(A = state.name[1:20], B = state.name[15:30]))
+#' list(
+#'   '`venn`' = grid.tzh::venn(list(A = state.name[1:20], B = state.name[15:30]))
 #' ) |> render_(file = 'gList')
 #' 
 #' @export md_.gList

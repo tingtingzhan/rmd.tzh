@@ -6,6 +6,7 @@ md_print0_ <- function(x, xnm, ...) {
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r comment = NA}',
+    '#| warning: false', 
     (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
     (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
     xnm, # print, but not say print
@@ -25,9 +26,10 @@ md_print_ <- function(x, xnm, ...) {
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r comment = NA}',
+    '#| warning: false', 
     (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
     (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
-    sprintf(fmt = '%s |> print() |> suppressWarnings()', xnm),
+    xnm |> sprintf(fmt = '%s |> print()'),
     # invokes
     # ?stats:::print.htest
     # ?stats:::print.power.htest
@@ -45,7 +47,7 @@ md_print_ <- function(x, xnm, ...) {
 #' library(ggplot2); list(
 #'   '`htest`' = t.test(mpg ~ am, data = mtcars),
 #'   '`power.htest`' = power.t.test(power = .90, delta = 1),
-#'   '`ggplot2::ggplot`' = ggplot(mtcars, aes(wt, mpg)) + geom_point(),
+#'   '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
 #'   '`GGally::ggmatrix`' = GGally::ggpairs(swiss, columns = c(1:2, 6))
 #' ) |> render_(file = 'Explicit Print')
 #' 
@@ -73,13 +75,12 @@ md_.power.htest <- md_print_ # md_print0; either okay
 #' (via function \link[plotly]{subplot}).
 #' 
 #' @examples
-#' library(flextable); library(reactable); library(plotly); 
 #' list(
-#'  '`flextable::flextable`' = Formaldehyde |> flextable(),
-#'  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable(),
+#'  '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
+#'  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
 #'  '`htmlwidget`' = list(
-#'    plot_ly(economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
-#'    plot_ly(z = ~volcano, type = "surface")
+#'    plotly::plot_ly(ggplot2::economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
+#'    plotly::plot_ly(z = ~volcano, type = "surface")
 #'  )
 #' ) |> render_(file = 'Do Not Say Print')
 #' 
