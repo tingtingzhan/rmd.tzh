@@ -28,9 +28,10 @@ md_.patchwork <- function(x, xnm, ncol = 2L, ...) {
   
   return(c(
     '```{r}',
+    '#| warning: false', 
     ((attr(x, which = 'fig.height', exact = TRUE) %||% 4) * ceiling(length(x) / ncol)) |> sprintf(fmt = '#| fig-height: %.1f'),
     ((attr(x, which = 'fig.width', exact = TRUE) %||% 7) * ncol) |> sprintf(fmt = '#| fig-width: %.1f'),
-    sprintf(fmt = 'suppressWarnings(%s + patchwork::plot_layout(ncol = %d))', xnm, ncol), # not sure how to put in `...`
+    sprintf(fmt = '%s + patchwork::plot_layout(ncol = %d)', xnm, ncol), # not sure how to put in `...`
     '```',
     '<any-text>'
   ))
