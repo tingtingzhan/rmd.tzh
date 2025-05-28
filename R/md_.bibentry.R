@@ -42,8 +42,8 @@ md_.bibentry <- function(x, ...) {
 #' @examples
 #' 'texreg' |> citation() |> format(style = 'text')
 #' 'texreg' |> citation() |> bibentry2text()
-#' @importFrom stringi stri_extract_all_regex stri_replace_all_fixed stri_replace_all_regex
 #' @keywords internal
+#' @importFrom stringi stri_extract_all_regex stri_replace_all_fixed stri_replace_all_regex
 #' @export
 bibentry2text <- function(x) {
   
