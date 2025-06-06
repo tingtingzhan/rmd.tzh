@@ -102,7 +102,7 @@ list(
 ) |> render_(file = 'bibentry')
 
 list(
- '`magick-image`' = 'https://jeroen.github.io/images/frink.png' |> magick::image_read()
+ '`magick-image`' = magick::wizard
 ) |> render_(file = 'magick')
 
 list(

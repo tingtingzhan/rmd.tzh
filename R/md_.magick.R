@@ -2,10 +2,9 @@
 
 
 #' @rdname md_
-#' 
 #' @examples
 #' list(
-#'  '`magick-image`' = 'https://jeroen.github.io/images/frink.png' |> magick::image_read()
+#'  '`magick-image`' = magick::wizard
 #' ) |> render_(file = 'magick')
 #' 
 #' @export `md_.magick-image`
