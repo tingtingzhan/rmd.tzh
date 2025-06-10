@@ -98,7 +98,7 @@ render_ <- function(
     fbib <- file.path(path, 'bibliography.bib')
     fbib |> file.create()
     fbib |> sink()
-    bib |> toBibtex() |> print()
+    bib |> toBibtex() |> print() # here it is *difficult* to use my [bibentry2text] !!!!!
     sink()
     lrmd <- c(r_yaml_(title = file, document = document, bib = 'bibliography', ...), lrmd)
   } else {
