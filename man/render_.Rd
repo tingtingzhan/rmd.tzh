@@ -10,6 +10,7 @@ render_(
   document = c("html", "word", "pdf"),
   file = stop("must specify `file` explicitly"),
   rmd.rm = TRUE,
+  bib.rm = TRUE,
   ...
 )
 }
@@ -23,7 +24,10 @@ render_(
 
 \item{file}{\link[base]{character} scalar}
 
-\item{rmd.rm}{\link[base]{logical} scalar, whether to remove the generated \code{'.rmd'} file,
+\item{rmd.rm}{\link[base]{logical} scalar, whether to remove the R markdown \code{'.rmd'} file,
+default \code{TRUE}}
+
+\item{bib.rm}{\link[base]{logical} scalar, whether to remove the bibliography \code{'.bib'} file,
 default \code{TRUE}}
 
 \item{...}{..}

@@ -5,7 +5,7 @@
 \alias{r_yaml_}
 \title{YAML Header}
 \usage{
-r_yaml_(title, author = "tingting.zhan@jefferson.edu", document, ...)
+r_yaml_(title, author = "tingting.zhan@jefferson.edu", document, bib, ...)
 }
 \arguments{
 \item{title}{\link[base]{character} scalar}
@@ -13,6 +13,8 @@ r_yaml_(title, author = "tingting.zhan@jefferson.edu", document, ...)
 \item{author}{\link[base]{character} scalar, author's name and/or email}
 
 \item{document}{\link[base]{character} scalar}
+
+\item{bib}{(optional) \link[base]{character} scalar, name of \code{.bib} bibliography file}
 
 \item{...}{additional parameters, currently not in use}
 }

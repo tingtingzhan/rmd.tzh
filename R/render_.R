@@ -13,7 +13,10 @@
 #' 
 #' @param file \link[base]{character} scalar
 #' 
-#' @param rmd.rm \link[base]{logical} scalar, whether to remove the generated `'.rmd'` file,
+#' @param rmd.rm \link[base]{logical} scalar, whether to remove the R markdown `'.rmd'` file,
+#' default `TRUE`
+#' 
+#' @param bib.rm \link[base]{logical} scalar, whether to remove the bibliography `'.bib'` file,
 #' default `TRUE`
 #' 
 #' @param ... ..
@@ -27,6 +30,7 @@ render_ <- function(
     document = c('html', 'word', 'pdf'),
     file = stop('must specify `file` explicitly'),
     rmd.rm = TRUE,
+    bib.rm = TRUE,
     ...
 ) {
   
@@ -48,9 +52,10 @@ render_ <- function(
     message('Existing ', sQuote(basename(fout)), ' removed')
   }
   
-  lrmd <- r_yaml_(title = file, document = document, ...)
+  #lrmd <- r_yaml_(title = file, document = document, ...)
   
-  lrmd <- c(lrmd, '\n', r_css_())
+  #lrmd <- c(lrmd, '\n', r_css_())
+  lrmd <- c('\n', r_css_()) # no YAML here (YAML depends on presence/absence of bib!!!)
   
   lrmd <- c(
     lrmd,
@@ -69,15 +74,35 @@ render_ <- function(
   nm <- names(x)
   if (!length(nm) || anyNA(nm) || !all(nzchar(nm))) stop('names must be complete')
   
+  bib <- bibentry()
+  
   for (i in seq_len(nx)) {
+    
+    new_md <- md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i))
+    new_bib <- new_md |> 
+      attr(which = 'bibentry', exact = TRUE)
+    if (length(new_bib)) bib <- c(bib, new_bib) # ?utils:::c.bibentry
+    
     lrmd <- c(
       lrmd, 
       '\n', # must use an extra '\n' (to separate from previous 'character')
       nm[i] |> sprintf(fmt = '# %s'),
       '\n',
-      md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i)), 
+      new_md, 
       '\n'
     )
+    
+  }
+  
+  if (length(bib)) {
+    fbib <- file.path(path, 'bibliography.bib')
+    fbib |> file.create()
+    fbib |> sink()
+    bib |> toBibtex() |> print()
+    sink()
+    lrmd <- c(r_yaml_(title = file, document = document, bib = 'bibliography', ...), lrmd)
+  } else {
+    lrmd <- c(r_yaml_(title = file, document = document, ...), lrmd)
   }
   
   c(
@@ -95,6 +120,7 @@ render_ <- function(
   paste0('open \'', normalizePath(fout), '\'') |> system()
   
   if (rmd.rm) file.remove(frmd) else paste0('open \'', normalizePath(frmd), '\'') |> system()
+  if (bib.rm) file.remove(fbib) else paste0('open \'', normalizePath(fbib), '\'') |> system()
   
   return(invisible(fout))
 }

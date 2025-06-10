@@ -8,6 +8,8 @@
 #' 
 #' @param document \link[base]{character} scalar
 #' 
+#' @param bib (optional) \link[base]{character} scalar, name of `.bib` bibliography file
+#' 
 #' @param ... additional parameters, currently not in use
 #' 
 #' @keywords internal
@@ -17,6 +19,7 @@ r_yaml_ <- function(
     title, 
     author = 'tingting.zhan@jefferson.edu',
     document,
+    bib,
     ...
 ) {
   
@@ -47,7 +50,11 @@ r_yaml_ <- function(
         '    toc: true',
         'always_allow_html: true'
       )
-    }), 
+    }),
+    
+    if (!missing(bib)) {
+      bib |> sprintf(fmt = 'bibliography: %s.bib')
+    }, # else NULL
     
     '---'
   )
