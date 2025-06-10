@@ -8,7 +8,7 @@ md_grid <- function(x, xnm, ...) {
   # https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html
   # rmarkdown does *not* provide cross-referencing 
   
-  return(c(
+  ret <- c(
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r}', 
@@ -22,7 +22,11 @@ md_grid <- function(x, xnm, ...) {
     # ?grid:::grid.draw.grob
     # etc.
     '```'
-  ))
+  )
+  bib <- attr(x, which = 'bibentry', exact = TRUE)
+  if (length(bib)) attr(ret, which = 'bibentry') <- bib
+  return(ret)
+  
 }
 
 
