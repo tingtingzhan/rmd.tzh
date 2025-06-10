@@ -22,7 +22,7 @@
 #' @param ... ..
 #' 
 #' @importFrom rmarkdown render
-#' @importFrom utils citation
+#' @importFrom utils bibentry citation toBibtex
 #' @export
 render_ <- function(
     x, 
@@ -120,7 +120,10 @@ render_ <- function(
   paste0('open \'', normalizePath(fout), '\'') |> system()
   
   if (rmd.rm) file.remove(frmd) else paste0('open \'', normalizePath(frmd), '\'') |> system()
-  if (bib.rm) file.remove(fbib) else paste0('open \'', normalizePath(fbib), '\'') |> system()
+  
+  if (length(bib)) {
+    if (bib.rm) file.remove(fbib) else paste0('open \'', normalizePath(fbib), '\'') |> system()
+  }
   
   return(invisible(fout))
 }
