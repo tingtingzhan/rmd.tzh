@@ -27,7 +27,7 @@ md_.bibentry <- function(x, ...) {
 
 #' @title Slight Improvement over `utils:::format.bibentry`
 #' 
-#' @param x a \link[utils]{citation} and/or \link[utils]{bibentry}
+#' @param x a \link[utils]{bibentry} object
 #' 
 #' @details
 #' Function [bibentry2text()] beautifies the output from 
@@ -66,9 +66,9 @@ bibentry2text <- function(x) {
   
   x |> 
     dropManual() |>
-    sortYear(decreasing = TRUE) |>
+    sort_by.bibentry(y = 'year', decreasing = TRUE) |>
     url2doi() |>
-    format(style = 'text') |> # ?utils:::format.citation -> ?utils:::format.bibentry
+    format(style = 'text') |> # ?utils:::format.bibentry
     gsub(pattern = '\n', replacement = ' ') |>
     gsub(pattern = '\"|\u201c|\u201d|\u2018|\u2019', replacement = '') |>
     # '\u201c|\u201d' # quotation marks created by ?base::dQuote
@@ -85,10 +85,11 @@ bibentry2text <- function(x) {
 
 
 if (FALSE) { # disabled for ?devtools::check
+  library(parallel)
   ct = installed.packages() |>
     rownames() |>
-    lapply(FUN = citation) # slow
-  tmp = ct |> lapply(FUN = md_.bibentry)
+    mclapply(FUN = citation, mc.cores = detectCores())
+  tmp = ct |> mclapply(FUN = md_.bibentry, mc.cores = detectCores())
   tmp[lengths(tmp) > 1L]
 } 
 
@@ -96,15 +97,15 @@ if (FALSE) { # disabled for ?devtools::check
 
 
 
-#' @title Handy Tools for \link[utils]{citation}
+#' @title Handy Tools for \link[utils]{bibentry}
 #' 
-#' @param x a \link[utils]{citation} and/or \link[utils]{bibentry}
+#' @param x a \link[utils]{bibentry} object
 #' 
 #' @details
 #' Function [url2doi()] converts a `url` field to `doi`, if it is a DOI URL.
 #' 
 #' @returns
-#' All functions returns a \link[utils]{citation} and/or \link[utils]{bibentry}.
+#' All functions returns a \link[utils]{bibentry} object
 #' 
 #' @examples
 #' 'stringi' |> citation() # using doi field, correct
@@ -117,21 +118,22 @@ if (FALSE) { # disabled for ?devtools::check
 #' @export
 url2doi <- function(x) {
   
+  url2doi. <- \(b) {
+    # (b = unclass(x)[[1L]])
+    if (!length(b[['url']])) return(b)
+    if (!grepl(pattern = 'https://doi.org/', x = b[['url']])) return(b)
+    doi <- gsub(pattern = 'https://doi.org/', replacement = '', x = b[['url']])
+    if (length(b[['doi']])) {
+      if (!identical(b[['doi']], doi)) stop()
+      # else do nothing
+    } else b[['doi']] <- doi
+    b[['url']] <- NULL
+    return(b)
+  }
+  
   ret <- x |>
     unclass() |> 
-    lapply(FUN = \(b) { # (b = unclass(x)[[1L]])
-      url_ <- b[['url']] # name clash ?base::url
-      if (!length(url_)) return(b)
-      if (!grepl(pattern = 'https://doi.org/', x = url_)) return(b)
-      doi <- gsub(pattern = 'https://doi.org/', replacement = '', x = url_)
-      if (length(b[['doi']])) {
-        if (!identical(b[['doi']], doi)) stop()
-        # else do nothing
-      } else b[['doi']] <- doi
-      b[['url']] <- NULL
-      return(b)
-    })
-  
+    lapply(FUN = url2doi.)
   attributes(ret) <- attributes(x)
   return(ret)
   
@@ -154,6 +156,7 @@ dropManual <- function(x) {
   bibtype <- x |>
     unclass() |>
     vapply(FUN = attr, which = 'bibtype', exact = TRUE, FUN.VALUE = '')
+  # see function ?utils:::`[[.bibentry` very very closely!!!
   
   isManual <- (bibtype == 'Manual')
   if (!any(isManual)) return(x)
@@ -164,28 +167,46 @@ dropManual <- function(x) {
 
 
 
-#' @rdname citation_ext
-#' @param decreasing \link[base]{logical} scalar, see function \link[base]{order}
+
+#' @title Sort \link[utils]{bibentry} By
+#' 
+#' @param x a \link[utils]{bibentry} object
+#' 
+#' @param y \link[base]{character} scalar
+#' 
+#' @param ... additional parameters of function \link[base]{order}
+#' 
 #' @details
-#' Function [sortYear()] sorts multiple citations of one package by year.
-#' Tingting Zhan doesn't want to define `sort_by.citation()`, which sounds a little creepy :))
+#' 
+#' Function [sort_by.bibentry()] sorts multiple citations of one package by some criteria (default being `'year'`).
+#' 
 #' @examples
 #' 'rmarkdown' |> citation()
-#' 'rmarkdown' |> citation() |> sortYear()
+#' 'rmarkdown' |> citation() |> sort_by(y = 'year', decreasing = TRUE)
+#' @export sort_by.bibentry
 #' @export
-sortYear <- function(x, decreasing = TRUE) {
+sort_by.bibentry <- function(x, y = 'year', ...) {
   
   nx <- length(x)
   if (nx == 1L) return(x)
   
-  year <- x |>
-    unclass() |>
-    vapply(FUN = \(i) i[['year']], FUN.VALUE = '') |> 
-    as.numeric()
+  if (!is.character(y) || length(y) != 1L || is.na(y) || !nzchar(y)) stop('`y` must be len-1 character')
   
-  return(x[order(year, decreasing = decreasing), drop = FALSE])
+  o <- x |>
+    unclass() |> # to avoid using ?utils:::`[[.bibentry`
+    vapply(FUN = \(i) i[[y]], FUN.VALUE = '') |> # all fields are \link[base]{character}
+    order(...)
+  
+  # um, if (y == 'bibtype'), we should grab the base::attr ..
+
+  return(x[o, drop = FALSE]) # utils:::`[.bibentry`
   
 }
+
+
+
+
+
 
 
 

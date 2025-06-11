@@ -4,34 +4,26 @@
 \alias{citation_ext}
 \alias{url2doi}
 \alias{dropManual}
-\alias{sortYear}
-\title{Handy Tools for \link[utils]{citation}}
+\title{Handy Tools for \link[utils]{bibentry}}
 \usage{
 url2doi(x)
 
 dropManual(x)
-
-sortYear(x, decreasing = TRUE)
 }
 \arguments{
-\item{x}{a \link[utils]{citation} and/or \link[utils]{bibentry}}
-
-\item{decreasing}{\link[base]{logical} scalar, see function \link[base]{order}}
+\item{x}{a \link[utils]{bibentry} object}
 }
 \value{
-All functions returns a \link[utils]{citation} and/or \link[utils]{bibentry}.
+All functions returns a \link[utils]{bibentry} object
 }
 \description{
-Handy Tools for \link[utils]{citation}
+Handy Tools for \link[utils]{bibentry}
 }
 \details{
 Function \code{\link[=url2doi]{url2doi()}} converts a \code{url} field to \code{doi}, if it is a DOI URL.
 
 Function \code{\link[=dropManual]{dropManual()}} removes the CRAN \code{Manual} citation,
 if a package has one-or-more \code{Article} citation.
-
-Function \code{\link[=sortYear]{sortYear()}} sorts multiple citations of one package by year.
-Tingting Zhan doesn't want to define \code{sort_by.citation()}, which sounds a little creepy :))
 }
 \examples{
 'stringi' |> citation() # using doi field, correct
@@ -40,8 +32,6 @@ Tingting Zhan doesn't want to define \code{sort_by.citation()}, which sounds a l
 'texreg' |> citation() |> url2doi()
 'kernlab' |> citation()
 'kernlab' |> citation() |> dropManual()
-'rmarkdown' |> citation()
-'rmarkdown' |> citation() |> sortYear()
 }
 \seealso{
 \code{utils:::`[.bibentry`}

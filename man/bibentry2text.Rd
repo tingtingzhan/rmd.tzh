@@ -7,7 +7,7 @@
 bibentry2text(x)
 }
 \arguments{
-\item{x}{a \link[utils]{citation} and/or \link[utils]{bibentry}}
+\item{x}{a \link[utils]{bibentry} object}
 }
 \description{
 Slight Improvement over \code{utils:::format.bibentry}
