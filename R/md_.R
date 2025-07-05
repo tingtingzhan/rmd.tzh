@@ -47,6 +47,22 @@ md_.data.frame <- function(x, xnm, ...) {
 
 #' @rdname md_
 #' @examples
+#' list('`xtabs`' = xtabs(~ cyl + vs, data = mtcars)) |> render_(file = 'xtabs')
+#' 
+#' @export md_.xtabs
+#' @export
+md_.xtabs <- function(x, xnm, ...) {
+  return(c(
+    '```{r}',
+    xnm |> sprintf(fmt = '%s |> as_flextable() |> autofit(part = \'all\')'),
+    '```', 
+    '<any-text>'
+  ))
+}
+
+
+#' @rdname md_
+#' @examples
 #' list('`matrix`' = VADeaths) |> render_(file = 'matrix')
 #' 
 #' @export md_.matrix

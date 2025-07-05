@@ -4,6 +4,7 @@
 \name{md_}
 \alias{md_}
 \alias{md_.data.frame}
+\alias{md_.xtabs}
 \alias{md_.matrix}
 \alias{md_.list}
 \alias{md_.numeric}
@@ -25,6 +26,8 @@
 md_(x, ...)
 
 \method{md_}{data.frame}(x, xnm, ...)
+
+\method{md_}{xtabs}(x, xnm, ...)
 
 \method{md_}{matrix}(x, xnm, ...)
 
@@ -83,6 +86,8 @@ on how to stack \code{'plotly'} objects
 }
 \examples{
 list('`data.frame`' = Formaldehyde) |> render_(file = 'data.frame')
+
+list('`xtabs`' = xtabs(~ cyl + vs, data = mtcars)) |> render_(file = 'xtabs')
 
 list('`matrix`' = VADeaths) |> render_(file = 'matrix')
 
