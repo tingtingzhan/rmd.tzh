@@ -82,12 +82,23 @@ md_.matrix <- function(x, xnm, ...) {
 #' @export md_.list
 #' @export
 md_.list <- function(x, xnm, ...) {
-  x |> 
+  
+  ret0 <- x |> 
     seq_along() |>
     lapply(FUN = \(i) {
-      c(md_(x = x[[i]], xnm = paste0(xnm, '[[', i, ']]'), ...), '\n\n')
-    }) |> 
+      md_(x = x[[i]], xnm = paste0(xnm, '[[', i, ']]'), ...)
+    })
+  
+  ret <- ret0 |> 
     unlist(recursive = FALSE, use.names = FALSE)
+  
+  bib <- ret0 |> 
+    lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
+  bib <- bib[lengths(bib, use.names = FALSE) > 0L] # otherwise ?utils:::c.bibentry error!
+  
+  if (length(bib)) attr(ret, which = 'bibentry') <- do.call(what = c, args = bib) # ?utils:::c.bibentry
+    
+  return(ret)
 }
 
 #' @rdname md_
