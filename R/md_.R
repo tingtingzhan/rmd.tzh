@@ -40,7 +40,8 @@ md_.data.frame <- function(x, xnm, ...) {
     '```{r}',
     xnm |> sprintf(fmt = '%s |> format4flextable() |> flextable() |> autofit(part = \'all\')'),
     '```', 
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
 }
 
@@ -56,7 +57,8 @@ md_.xtabs <- function(x, xnm, ...) {
     '```{r}',
     xnm |> sprintf(fmt = '%s |> as_flextable() |> autofit(part = \'all\')'),
     '```', 
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
 }
 
@@ -72,7 +74,8 @@ md_.matrix <- function(x, xnm, ...) {
     '```{r}',
     paste0('as_flextable.matrix(', xnm, ')'), # 3-dimension not working well now!!
     '```', 
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
 }
 

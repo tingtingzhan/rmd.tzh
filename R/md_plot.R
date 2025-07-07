@@ -13,7 +13,8 @@ md_plot_ <- function(x, xnm, ...) {
     # ?consort:::plot.consort
     # etc.
     '```', 
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
 }
 

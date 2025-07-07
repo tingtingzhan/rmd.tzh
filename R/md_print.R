@@ -15,7 +15,8 @@ md_print0_ <- function(x, xnm, ...) {
     # ?htmlwidgets:::print.htmlwidget
     # etc.
     '```',
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
 }
 
@@ -37,7 +38,8 @@ md_print_ <- function(x, xnm, ...) {
     # ?GGally:::print.ggmatrix
     # etc.
     '```',
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
 }
 

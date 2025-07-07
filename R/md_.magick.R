@@ -14,7 +14,8 @@
     '```{r}',
     sprintf(fmt = '%s |> print(info = FALSE)', xnm), # ?magick:::`print.magick-image`
     '```', 
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
   # ?magick::image_write; write to a file
   # ?magick::image_info; height and width

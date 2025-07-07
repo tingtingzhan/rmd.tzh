@@ -18,6 +18,7 @@ md_.pairwise.htest <- function(x, xnm, ...) c(
   sprintf(fmt = '(%s) |> as_flextable.pairwise.htest()', xnm), 
   sprintf(fmt = '(%s) |> p_adjust_.pairwise.htest() |> label_pvalue_sym()() |> as_flextable.matrix()', xnm), 
   '```', 
-  '<any-text>'
+  '<any-text>',
+  '\n\n'
 )
 

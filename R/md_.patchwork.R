@@ -33,7 +33,8 @@ md_.patchwork <- function(x, xnm, ncol = 2L, ...) {
     ((attr(x, which = 'fig.width', exact = TRUE) %||% 7) * ncol) |> sprintf(fmt = '#| fig-width: %.1f'),
     sprintf(fmt = '%s + patchwork::plot_layout(ncol = %d)', xnm, ncol), # not sure how to put in `...`
     '```',
-    '<any-text>'
+    '<any-text>',
+    '\n\n'
   ))
   
 }
