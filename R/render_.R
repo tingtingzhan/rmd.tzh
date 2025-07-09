@@ -113,13 +113,20 @@ collect_bibentry <- function(x) {
     lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
   
   id <- (lengths(bib, use.names = FALSE) > 0L)
-  
   if (!any(id)) return(invisible())
-  # ?utils:::c.bibentry cannot take non-bibentry input
-  return(do.call(what = c, args = bib[id]))
+  
+  ret <- bib[id] |> # ?utils:::c.bibentry cannot take non-bibentry input
+    do.call(what = c, args = _) |> # ?utils:::c.bibentry
+    unique() # ?utils:::unique.bibentry
+  
+  keys <- ret |>
+    unclass() |>
+    vapply(FUN = attr, which = 'key', exact = TRUE, FUN.VALUE = '')
+  if (anyDuplicated.default(keys)) stop('same key(s) from different bibliography items')
+  
+  return(ret)
 
 }
-
 
 
 
