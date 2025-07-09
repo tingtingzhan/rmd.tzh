@@ -30,8 +30,8 @@ if a package has one-or-more \code{Article} citation.
 
 'texreg' |> citation() # doi in url field, not good!
 'texreg' |> citation() |> url2doi()
-'kernlab' |> citation()
-'kernlab' |> citation() |> dropManual()
+'survival' |> citation()
+'survival' |> citation() |> dropManual()
 }
 \seealso{
 \code{utils:::`[.bibentry`}

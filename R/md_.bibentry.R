@@ -69,10 +69,16 @@ bibentry2text <- function(x) {
     sort_by.bibentry(y = 'year', decreasing = TRUE) |>
     url2doi() |>
     format(style = 'text') |> # ?utils:::format.bibentry
-    gsub(pattern = '\n', replacement = ' ') |>
-    gsub(pattern = '\"|\u201c|\u201d|\u2018|\u2019', replacement = '') |>
+    
+    # tzh does not know where '\n' comes from
+    # or whether tzh is capable of removing it using parameters of ?utils:::format.bibentry  
+    gsub(pattern = '\n', replacement = ' ') |> 
+    
+    # REMOVED!!!  do not do this
+    #gsub(pattern = '\"|\u201c|\u201d|\u2018|\u2019', replacement = '') |>
     # '\u201c|\u201d' # quotation marks created by ?base::dQuote
     # '\u2018|\u2019' # quotation marks created by ?base::sQuote
+    
     format_doi(
       regex_pattern = '( doi:)(.*?)( <https://doi.org/)(.*?)(>)(.|,)', 
       fixed_pattern = c(' doi:', ' <https://doi.org/', '>'), 
@@ -89,6 +95,15 @@ if (FALSE) { # disabled for ?devtools::check
   ct = installed.packages() |>
     rownames() |>
     mclapply(FUN = citation, mc.cores = detectCores())
+  
+  tmp = ct |> 
+    mclapply(FUN = format, style = 'text', mc.cores = detectCores()) |>
+    unlist(recursive = TRUE)
+  grep('\u2018', tmp) # none!!
+  tmp[grep('\u2019', tmp)]
+  grep('\u201c', tmp) # none!!
+  
+  
   tmp = ct |> mclapply(FUN = md_.bibentry, mc.cores = detectCores())
   tmp[lengths(tmp) > 1L]
 } 
@@ -118,26 +133,39 @@ if (FALSE) { # disabled for ?devtools::check
 #' @export
 url2doi <- function(x) {
   
-  url2doi. <- \(b) {
-    # (b = unclass(x)[[1L]])
-    if (!length(b[['url']])) return(b)
-    if (!grepl(pattern = 'https://doi.org/', x = b[['url']])) return(b)
-    doi <- gsub(pattern = 'https://doi.org/', replacement = '', x = b[['url']])
-    if (length(b[['doi']])) {
-      if (!identical(b[['doi']], doi)) stop()
-      # else do nothing
-    } else b[['doi']] <- doi
-    b[['url']] <- NULL
-    return(b)
-  }
+  x0 <- x |>
+    unclass()
+  # must!!
+  # see # methods(class = 'bibentry')
+  # otherwise ?utils:::`[<-.bibentry` causes error hahaha
   
-  ret <- x |>
-    unclass() |> 
+  x0[] <- x0 |> 
     lapply(FUN = url2doi.)
-  attributes(ret) <- attributes(x)
-  return(ret)
+  
+  class(x0) <- class(x)
+  # attributes intact
+  return(x0)
   
 }
+
+
+
+
+url2doi. <- function(b) {
+  # (b = unclass(x)[[1L]]) # `x` is ?utils::bibentry object
+  if (!length(b[['url']])) return(b)
+  if (!grepl(pattern = 'https://doi.org/', x = b[['url']])) return(b)
+  doi <- gsub(pattern = 'https://doi.org/', replacement = '', x = b[['url']])
+  if (length(b[['doi']])) {
+    if (!identical(b[['doi']], doi)) stop()
+    # else do nothing
+  } else b[['doi']] <- doi
+  b[['url']] <- NULL
+  return(b)
+}
+
+
+
 
 
 #' @rdname citation_ext
@@ -145,10 +173,13 @@ url2doi <- function(x) {
 #' Function [dropManual()] removes the CRAN `Manual` citation, 
 #' if a package has one-or-more `Article` citation.
 #' @examples
-#' 'kernlab' |> citation()
-#' 'kernlab' |> citation() |> dropManual()
+#' 'survival' |> citation()
+#' 'survival' |> citation() |> dropManual()
 #' @export
 dropManual <- function(x) {
+  
+  # tzh is not sure whether to define [subset.bibentry], i.e.,
+  # x |> subset.bibentry(subset = (bibtype != 'Manual'))
   
   nx <- length(x)
   if (nx == 1L) return(x)
@@ -197,7 +228,7 @@ sort_by.bibentry <- function(x, y = 'year', ...) {
     vapply(FUN = \(i) i[[y]], FUN.VALUE = '') |> # all fields are \link[base]{character}
     order(...)
   
-  # um, if (y == 'bibtype'), we should grab the base::attr ..
+  # um, if (y == 'bibtype'), we need to grab the base::attr ..
 
   return(x[o, drop = FALSE]) # utils:::`[.bibentry`
   
