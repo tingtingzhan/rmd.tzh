@@ -101,7 +101,7 @@ if (FALSE) { # disabled for ?devtools::check
     unlist(recursive = TRUE)
   grep('\u2018', tmp) # none!!
   tmp[grep('\u2019', tmp)]
-  grep('\u201c', tmp) # none!!
+  # grep('\u201c', tmp)
   
   
   tmp = ct |> mclapply(FUN = md_.bibentry, mc.cores = detectCores())
