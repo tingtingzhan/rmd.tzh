@@ -90,31 +90,27 @@ md_.list <- function(x, xnm, ...) {
     seq_along() |>
     lapply(FUN = \(i) {
       md_(x = x[[i]], xnm = paste0(xnm, '[[', i, ']]'), ...)
-    })
+    }) 
   
   ret <- ret0 |> 
     unlist(recursive = FALSE, use.names = FALSE)
   
-  bib <- ret0 |> 
-    lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
-  bib <- bib[lengths(bib, use.names = FALSE) > 0L] # otherwise ?utils:::c.bibentry error!
-  
-  if (length(bib)) attr(ret, which = 'bibentry') <- do.call(what = c, args = bib) # ?utils:::c.bibentry
-    
+  attr(ret, which = 'bibentry') <- ret0 |> collect_bibentry()
   return(ret)
+  
 }
 
 #' @rdname md_
 #' @export md_.numeric
 #' @export
 md_.numeric <- function(x, ...) {
-  paste(x, collapse = ', ')
+  c(paste(x, collapse = ', '), '\n\n')
 }
 
 #' @rdname md_
 #' @export md_.character
 #' @export
-md_.character <- function(x, ...) x # not ?base::identity
+md_.character <- function(x, ...) c(x, '\n\n')
 
 
 #' @rdname md_

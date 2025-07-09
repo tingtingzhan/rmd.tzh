@@ -5,7 +5,14 @@
 \alias{r_yaml_}
 \title{YAML Header}
 \usage{
-r_yaml_(title, author = "tingting.zhan@jefferson.edu", document, bib, ...)
+r_yaml_(
+  title,
+  author = "tingting.zhan@jefferson.edu",
+  document,
+  bib = bibentry(),
+  path = NULL,
+  ...
+)
 }
 \arguments{
 \item{title}{\link[base]{character} scalar}
@@ -14,7 +21,9 @@ r_yaml_(title, author = "tingting.zhan@jefferson.edu", document, bib, ...)
 
 \item{document}{\link[base]{character} scalar}
 
-\item{bib}{(optional) \link[base]{character} scalar, name of \code{.bib} bibliography file}
+\item{bib}{(optional) \link[utils]{bibentry} object}
+
+\item{path}{(optional) \link[base]{character} scalar, directory of \code{.bib} file when \code{bib} argument exists}
 
 \item{...}{additional parameters, currently not in use}
 }

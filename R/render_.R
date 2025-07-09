@@ -22,7 +22,7 @@
 #' @param ... ..
 #' 
 #' @importFrom rmarkdown render
-#' @importFrom utils bibentry citation toBibtex
+#' @importFrom utils citation
 #' @export
 render_ <- function(
     x, 
@@ -51,14 +51,24 @@ render_ <- function(
     file.remove(fout)
     message('Existing ', sQuote(basename(fout)), ' removed')
   }
+
+  nm <- names(x)
+  if (!length(nm) || anyNA(nm) || !all(nzchar(nm))) stop('names must be complete')
   
-  #lrmd <- r_yaml_(title = file, document = document, ...)
+  md. <- nx |> 
+    seq_len() |>
+    lapply(\(i) md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i)))
   
-  #lrmd <- c(lrmd, '\n', r_css_())
-  lrmd <- c('\n', r_css_()) # no YAML here (YAML depends on presence/absence of bib!!!)
+  md_ <- .mapply(FUN = c, dots = list(
+    nm |> sprintf(fmt = '\n# %s\n'), # must use an extra '\n' to separate from previous 'character'
+    md.
+  ), MoreArgs = NULL) |>
+    unlist(use.names = FALSE)
   
-  lrmd <- c(
-    lrmd,
+  c(
+    r_yaml_(title = file, document = document, bib = md. |> collect_bibentry(), path = path, ...), 
+    '\n', 
+    r_css_(),
     '\n',
     '```{r}',
     '#| include: false',
@@ -68,52 +78,16 @@ render_ <- function(
     'library(flextable)', # e.g., flextable::as_flextable
     'library(flextable.tzh)', # e.g. flextable.tzh::as_flextable.matrix
     'library(scales.tzh)',
-    '```'
-  )
-
-  nm <- names(x)
-  if (!length(nm) || anyNA(nm) || !all(nzchar(nm))) stop('names must be complete')
-  
-  bib <- bibentry()
-  
-  for (i in seq_len(nx)) {
-    
-    new_md <- md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i))
-    new_bib <- new_md |> 
-      attr(which = 'bibentry', exact = TRUE)
-    if (length(new_bib)) bib <- c(bib, new_bib) # ?utils:::c.bibentry
-    
-    lrmd <- c(
-      lrmd, 
-      '\n', # must use an extra '\n' (to separate from previous 'character')
-      nm[i] |> sprintf(fmt = '# %s'),
-      '\n',
-      new_md, 
-      '\n'
-    )
-    
-  }
-  
-  if (length(bib)) {
-    fbib <- file.path(path, 'bibliography.bib')
-    fbib |> file.create()
-    fbib |> sink()
-    bib |> toBibtex() |> print() # here it is *difficult* to use my [bibentry2text] !!!!!
-    sink()
-    lrmd <- c(r_yaml_(title = file, document = document, bib = 'bibliography', ...), lrmd)
-  } else {
-    lrmd <- c(r_yaml_(title = file, document = document, ...), lrmd)
-  }
-  
-  c(
-    lrmd, 
+    '```',
+    '\n',
+    md_, 
     '\n',
     '# Citations',
-    lrmd |> 
+    md_ |> 
       extract_pkg_name() |> 
       lapply(FUN = \(i) i |> citation() |> md_.bibentry()) |>
       unlist(use.names = FALSE)
-  ) |> 
+  ) |>
     writeLines(con = frmd, sep = '\n')
   
   render(input = frmd, output_file = fout, intermediates_dir = path, quiet = TRUE)
@@ -121,12 +95,32 @@ render_ <- function(
   
   if (rmd.rm) file.remove(frmd) else paste0('open \'', normalizePath(frmd), '\'') |> system()
   
-  if (length(bib)) {
-    if (bib.rm) file.remove(fbib) else paste0('open \'', normalizePath(fbib), '\'') |> system()
+  bibfile <- path |> 
+    list.files(pattern = '\\.bib$', full.names = TRUE)
+  if (length(bibfile)) {
+    if (bib.rm) file.remove(bibfile) else paste0('open \'', normalizePath(bibfile), '\'') |> system()
+    # system() probably works with len-1 file only
   }
   
   return(invisible(fout))
 }
+
+
+collect_bibentry <- function(x) {
+  # `x` is a 'list' with 'character' elements
+  
+  bib <- x |> 
+    lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
+  
+  id <- (lengths(bib, use.names = FALSE) > 0L)
+  
+  if (!any(id)) return(invisible())
+  # ?utils:::c.bibentry cannot take non-bibentry input
+  return(do.call(what = c, args = bib[id]))
+
+}
+
+
 
 
 

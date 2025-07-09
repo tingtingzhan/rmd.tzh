@@ -8,18 +8,22 @@
 #' 
 #' @param document \link[base]{character} scalar
 #' 
-#' @param bib (optional) \link[base]{character} scalar, name of `.bib` bibliography file
+#' @param bib (optional) \link[utils]{bibentry} object
+#' 
+#' @param path (optional) \link[base]{character} scalar, directory of `.bib` file when `bib` argument exists
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
 #' @keywords internal
 #' @name yaml
+#' @importFrom utils bibentry toBibtex
 #' @export
 r_yaml_ <- function(
     title, 
     author = 'tingting.zhan@jefferson.edu',
     document,
-    bib,
+    bib = bibentry(),
+    path = NULL, # used when (length(bib) > 0L)
     ...
 ) {
   
@@ -52,8 +56,15 @@ r_yaml_ <- function(
       )
     }),
     
-    if (!missing(bib)) {
-      bib |> sprintf(fmt = 'bibliography: %s.bib')
+    if (length(bib)) {
+      if (!length(path)) stop('must provide `path` when `bib` exists')
+      bibfile <- file.path(path, 'bibliography.bib')
+      if (file.exists(bibfile)) file.remove(bibfile) # without warning
+      bibfile |> file.create()
+      bibfile |> sink()
+      bib |> toBibtex() |> print() # here it is *difficult* to use my [bibentry2text] !!!!!
+      sink()
+      'bibliography: bibliography.bib' # written to YAML
     }, # else NULL
     
     '---'
