@@ -93,13 +93,24 @@ render_ <- function(
   render(input = frmd, output_file = fout, intermediates_dir = path, quiet = TRUE)
   paste0('open \'', normalizePath(fout), '\'') |> system()
   
-  if (rmd.rm) file.remove(frmd) else paste0('open \'', normalizePath(frmd), '\'') |> system()
+  if (rmd.rm) file.remove(frmd) else {
+    frmd |>
+      normalizePath() |>
+      sprintf(fmt = 'open \'%s\'') |> 
+      system()
+  }
   
   bibfile <- path |> 
     list.files(pattern = '\\.bib$', full.names = TRUE)
   if (length(bibfile)) {
-    if (bib.rm) file.remove(bibfile) else paste0('open \'', normalizePath(bibfile), '\'') |> system()
-    # system() probably works with len-1 file only
+    if (bib.rm) file.remove(bibfile) else {
+      bibfile |>
+        normalizePath() |>
+        sprintf(fmt = 'open \'%s\'') |> 
+        lapply(FUN = system)
+      #paste0('open \'', normalizePath(bibfile), '\'') |> system()
+    }
+    
   }
   
   return(invisible(fout))

@@ -9,10 +9,19 @@ md_print0_ <- function(x, xnm, ...) {
     '#| warning: false', 
     (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
     (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
+    
     xnm, # print, but not say print
-    # invokes
+    # must *not* say print, to correctly invoke
     # ?flextable:::print.flextable
     # ?htmlwidgets:::print.htmlwidget
+    # etc.
+    
+    # okay to say or not say print, i.e., `xnm |> sprintf(fmt = '%s |> print()')`
+    # ?stats:::print.htest
+    # ?stats:::print.power.htest
+    # ?ggplot2:::print.ggplot
+    # ?GGally:::print.ggmatrix
+    # ?magick:::`print.magick-image`
     # etc.
     '```',
     '<any-text>',
@@ -31,12 +40,7 @@ md_print_ <- function(x, xnm, ...) {
     (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
     (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
     xnm |> sprintf(fmt = '%s |> print()'),
-    # invokes
-    # ?stats:::print.htest
-    # ?stats:::print.power.htest
-    # ?ggplot2:::print.ggplot
-    # ?GGally:::print.ggmatrix
-    # etc.
+    # currently no object **requires** [md_print_()]
     '```',
     '<any-text>',
     '\n\n'
@@ -44,29 +48,6 @@ md_print_ <- function(x, xnm, ...) {
 }
 
 
-#' @rdname md_
-#' @examples
-#' library(ggplot2); list(
-#'   '`htest`' = t.test(mpg ~ am, data = mtcars),
-#'   '`power.htest`' = power.t.test(power = .90, delta = 1),
-#'   '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
-#'   '`GGally::ggmatrix`' = GGally::ggpairs(swiss, columns = c(1:2, 6))
-#' ) |> render_(file = 'Explicit Print')
-#' 
-#' @export md_.gg
-#' @export
-md_.gg <- md_print_
-
-#' @rdname md_
-#' @export md_.htest
-#' @export
-md_.htest <- md_print_ # md_print0; either okay
-
-#' @rdname md_
-#' @method md_ power.htest
-#' @export md_.power.htest
-#' @export
-md_.power.htest <- md_print_ # md_print0; either okay
 
 
 #' @rdname md_
@@ -77,6 +58,7 @@ md_.power.htest <- md_print_ # md_print0; either okay
 #' (via function \link[plotly]{subplot}).
 #' 
 #' @examples
+#' library(ggplot2)
 #' library(leaflet)
 #' washingtonDC = leaflet() |>
 #'   addTiles() |>
@@ -87,21 +69,51 @@ md_.power.htest <- md_print_ # md_print0; either okay
 #'   )
 #' 
 #' list(
+#'  '`htest`' = t.test(mpg ~ am, data = mtcars),
+#'  '`power.htest`' = power.t.test(power = .90, delta = 1),
+#'  '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
+#'  '`GGally::ggmatrix`, a `gg` object' = GGally::ggpairs(swiss, columns = c(1:2, 6)),
 #'  '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
+#'  '`magick-image` from package `magick`' = magick::wizard,
 #'  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
 #'  '`leaflet::leaflet`, an `htmlwidget`' = washingtonDC,
 #'  '`htmlwidget`' = list(
 #'    plotly::plot_ly(ggplot2::economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
 #'    plotly::plot_ly(z = ~volcano, type = "surface")
 #'  )
-#' ) |> render_(file = 'Do Not Say Print')
+#' ) |> render_(file = 'Do Not (Need to) Say Print')
 #' 
 #' @export md_.flextable
 #' @export
-md_.flextable <- md_print0_ # md_print_ *not* okay!!
+md_.flextable <- md_print0_ # [md_print_()] *not* okay!!
 
 #' @rdname md_
 #' @export md_.htmlwidget
 #' @export
-md_.htmlwidget <- md_print0_ # md_print_ *not* okay!!
+md_.htmlwidget <- md_print0_ # [md_print_()] *not* okay!!
+
+#' @rdname md_
+#' @export md_.gg
+#' @export
+md_.gg <- md_print0_ # [md_print_()] also okay
+
+#' @rdname md_
+#' @export md_.htest
+#' @export
+md_.htest <- md_print0_ # [md_print_()] also okay
+
+#' @rdname md_
+#' @method md_ power.htest
+#' @export md_.power.htest
+#' @export
+md_.power.htest <- md_print0_ # [md_print_()] also okay
+
+
+#' @rdname md_
+#' @export `md_.magick-image`
+#' @export
+`md_.magick-image` <- md_print0_ # [md_print_()] also okay
+# ?magick::image_write; write to a file
+# ?magick::image_info; height and width
+
 
