@@ -135,9 +135,19 @@ library(ggplot2); list(
   '`GGally::ggmatrix`' = GGally::ggpairs(swiss, columns = c(1:2, 6))
 ) |> render_(file = 'Explicit Print')
 
+library(leaflet)
+washingtonDC = leaflet() |>
+  addTiles() |>
+  fitBounds(lat1 = 38.85, lat2 = 38.92, lng1 = -77.07, lng2 = -77.0) |>
+  addPopups(
+    lng = c(-77.0365, -77.0563), lat = c(38.8977, 38.8719), 
+    popup = c('white house', 'pentagon')
+  )
+
 list(
  '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
+ '`leaflet::leaflet`, an `htmlwidget`' = washingtonDC,
  '`htmlwidget`' = list(
    plotly::plot_ly(ggplot2::economics, x = ~date, y = ~pop, type = 'scatter', mode = 'markers'),
    plotly::plot_ly(z = ~volcano, type = "surface")
