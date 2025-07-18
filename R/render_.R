@@ -57,16 +57,23 @@ render_ <- function(
   
   md. <- nx |> 
     seq_len() |>
-    lapply(\(i) md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i)))
+    lapply(FUN = \(i) {
+      md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i))
+    })
   
   md_ <- .mapply(FUN = c, dots = list(
     nm |> sprintf(fmt = '\n# %s\n'), # must use an extra '\n' to separate from previous 'character'
     md.
   ), MoreArgs = NULL) |>
-    unlist(use.names = FALSE)
+    unlist(recursive = TRUE, use.names = FALSE)
+  
+  bib <- md. |>
+    lapply(FUN = collect_attr_, which = 'bibentry') |>
+    do.call(what = c, args = _) |> # ?utils:::c.bibentry
+    unique() # ?utils:::unique.bibentry
   
   c(
-    r_yaml_(title = file, document = document, bib = md. |> collect_attr_(which = 'bibentry'), path = path, ...), 
+    r_yaml_(title = file, document = document, bib = bib, path = path, ...), 
     '\n', 
     r_css_(),
     '\n',
