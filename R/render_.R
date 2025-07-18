@@ -66,7 +66,7 @@ render_ <- function(
     unlist(use.names = FALSE)
   
   c(
-    r_yaml_(title = file, document = document, bib = md. |> collect_bibentry(), path = path, ...), 
+    r_yaml_(title = file, document = document, bib = md. |> collect_attr_(which = 'bibentry'), path = path, ...), 
     '\n', 
     r_css_(),
     '\n',
@@ -117,23 +117,33 @@ render_ <- function(
 }
 
 
-collect_bibentry <- function(x) {
+collect_attr_ <- function(x, which = c('bibentry', 'package')) {
   # `x` is a 'list' with 'character' elements
   
-  bib <- x |> 
+  which <- match.arg(which)
+  
+  z <- x |> 
     lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
   
-  id <- (lengths(bib, use.names = FALSE) > 0L)
+  id <- (lengths(z, use.names = FALSE) > 0L)
   if (!any(id)) return(invisible())
   
-  ret <- bib[id] |> # ?utils:::c.bibentry cannot take non-bibentry input
-    do.call(what = c, args = _) |> # ?utils:::c.bibentry
-    unique() # ?utils:::unique.bibentry
+  ret <- z[id] |> # ?utils:::c.bibentry cannot take non-bibentry input
+    do.call(what = c, args = _) |> 
+    # ?base::c 
+    # ?utils:::c.bibentry
+    unique() 
+  # ?base::unique.default
+  # ?utils:::unique.bibentry
   
-  keys <- ret |>
-    unclass() |>
-    vapply(FUN = attr, which = 'key', exact = TRUE, FUN.VALUE = '')
-  if (anyDuplicated.default(keys)) stop('same key(s) from different bibliography items')
+  # some specific checks
+  switch(which, bibentry = {
+    dup_key <- ret |>
+      unclass() |>
+      vapply(FUN = attr, which = 'key', exact = TRUE, FUN.VALUE = '') |>
+      anyDuplicated.default()
+    if (dup_key) stop('same key(s) from different bibliography items')
+  })
   
   return(ret)
 

@@ -95,7 +95,8 @@ md_.list <- function(x, xnm, ...) {
   ret <- ret0 |> 
     unlist(recursive = FALSE, use.names = FALSE)
   
-  attr(ret, which = 'bibentry') <- ret0 |> collect_bibentry()
+  attr(ret, which = 'bibentry') <- ret0 |> 
+    collect_attr_(which = 'bibentry')
   return(ret)
   
 }
