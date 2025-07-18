@@ -72,7 +72,7 @@ md_print_ <- function(x, xnm, ...) {
 #'  '`htest`' = t.test(mpg ~ am, data = mtcars),
 #'  '`power.htest`' = power.t.test(power = .90, delta = 1),
 #'  '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
-#'  '`GGally::ggmatrix`, a `gg` object' = GGally::ggpairs(swiss, columns = c(1:2, 6)),
+#'  '`GGally::ggmatrix`, an `S7_object`' = GGally::ggpairs(swiss, columns = c(1:2, 6)),
 #'  '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
 #'  '`magick-image` from package `magick`' = magick::wizard,
 #'  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
@@ -96,6 +96,15 @@ md_.htmlwidget <- md_print0_ # [md_print_()] *not* okay!!
 #' @export md_.gg
 #' @export
 md_.gg <- md_print0_ # [md_print_()] also okay
+
+#' @rdname md_
+#' @export md_.S7_object
+#' @export
+md_.S7_object <- md_print0_ # [md_print_()] also okay
+# since GGally 2.3.0 on 2025-07-17
+# 'ggmatrix' no longer inherits from 'gg' in \CRANpkg{ggplot2}
+# but from ?S7::S7_object
+# actually, \CRANpkg{ggplot2} v4.0.0 is switching to \CRANpkg{S7} !!! 
 
 #' @rdname md_
 #' @export md_.htest

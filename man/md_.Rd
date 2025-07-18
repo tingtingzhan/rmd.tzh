@@ -18,6 +18,7 @@
 \alias{md_.flextable}
 \alias{md_.htmlwidget}
 \alias{md_.gg}
+\alias{md_.S7_object}
 \alias{md_.htest}
 \alias{md_.power.htest}
 \alias{md_.magick-image}
@@ -54,6 +55,8 @@ md_(x, ...)
 \method{md_}{htmlwidget}(x, xnm, ...)
 
 \method{md_}{gg}(x, xnm, ...)
+
+\method{md_}{S7_object}(x, xnm, ...)
 
 \method{md_}{htest}(x, xnm, ...)
 
@@ -138,7 +141,7 @@ list(
  '`htest`' = t.test(mpg ~ am, data = mtcars),
  '`power.htest`' = power.t.test(power = .90, delta = 1),
  '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
- '`GGally::ggmatrix`, a `gg` object' = GGally::ggpairs(swiss, columns = c(1:2, 6)),
+ '`GGally::ggmatrix`, an `S7_object`' = GGally::ggpairs(swiss, columns = c(1:2, 6)),
  '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
  '`magick-image` from package `magick`' = magick::wizard,
  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
