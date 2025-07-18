@@ -129,6 +129,8 @@ collect_attr_ <- function(x, which = c('bibentry', 'package')) {
   
   which <- match.arg(which)
   
+  if (!is.recursive(x)) x <- list(x)
+    
   z <- x |> 
     lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
   
