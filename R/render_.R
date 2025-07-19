@@ -82,8 +82,7 @@ render_ <- function(
     'options(bitmapType = \'cairo\')', # for correct unicode support; DO I STILL NEED THIS ??
     'library(knitr)',
     'opts_chunk$set(echo = FALSE)',
-    'library(flextable)', # e.g., flextable::as_flextable
-    'library(flextable.tzh)', # e.g. flextable.tzh::as_flextable.matrix
+    'library(flextable.tzh)', # also loads \CRANpkg{flextable}
     'library(scales.tzh)',
     '```',
     '\n',
