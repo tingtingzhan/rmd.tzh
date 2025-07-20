@@ -16,7 +16,7 @@ c.md_lines <- function(...) {
     do.call(what = c, args = _) # ?base::c, Primitive
   
   bib_ <- x |> 
-    lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
+    lapply(FUN = slot, name = 'bibentry') 
   id <- (lengths(bib_, use.names = FALSE) > 0L)
   if (any(id)) {
     bib <- bib_[id] |> # ?utils:::c.bibentry cannot take non-bibentry input
