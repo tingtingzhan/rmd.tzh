@@ -1,7 +1,7 @@
 
 md_plot_ <- function(x, xnm, ...) {
   
-  return(c(
+  c(
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r}',
@@ -12,10 +12,8 @@ md_plot_ <- function(x, xnm, ...) {
     # ?lattice:::plot.trellis
     # ?consort:::plot.consort
     # etc.
-    '```', 
-    '<any-text>',
-    '\n\n'
-  ))
+    '```'
+  ) |> new(Class = 'md_lines')
 }
 
 

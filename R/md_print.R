@@ -2,7 +2,7 @@
 
 md_print0_ <- function(x, xnm, ...) {
   
-  return(c(
+  c(
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r comment = NA}',
@@ -23,16 +23,14 @@ md_print0_ <- function(x, xnm, ...) {
     # ?GGally:::print.ggmatrix
     # ?magick:::`print.magick-image`
     # etc.
-    '```',
-    '<any-text>',
-    '\n\n'
-  ))
+    '```'
+  ) |> new(Class = 'md_lines')
 }
 
 
 md_print_ <- function(x, xnm, ...) {
   
-  return(c(
+  c(
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r comment = NA}',
@@ -41,10 +39,8 @@ md_print_ <- function(x, xnm, ...) {
     (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
     xnm |> sprintf(fmt = '%s |> print()'),
     # currently no object **requires** [md_print_()]
-    '```',
-    '<any-text>',
-    '\n\n'
-  ))
+    '```'
+  ) |> new(Class = 'md_lines')
 }
 
 

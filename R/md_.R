@@ -36,13 +36,11 @@ md_ <- function(x, ...) {
 #' @export md_.data.frame
 #' @export
 md_.data.frame <- function(x, xnm, ...) {
-  return(c(
+  c(
     '```{r}',
     xnm |> sprintf(fmt = '%s |> format4flextable() |> flextable() |> autofit(part = \'all\')'),
-    '```', 
-    '<any-text>',
-    '\n\n'
-  ))
+    '```'
+  ) |> new(Class = 'md_lines')
 }
 
 
@@ -53,13 +51,11 @@ md_.data.frame <- function(x, xnm, ...) {
 #' @export md_.xtabs
 #' @export
 md_.xtabs <- function(x, xnm, ...) {
-  return(c(
+  c(
     '```{r}',
     xnm |> sprintf(fmt = '%s |> as_flextable() |> autofit(part = \'all\')'),
-    '```', 
-    '<any-text>',
-    '\n\n'
-  ))
+    '```'
+  ) |> new(Class = 'md_lines')
 }
 
 
@@ -70,13 +66,11 @@ md_.xtabs <- function(x, xnm, ...) {
 #' @export md_.matrix
 #' @export
 md_.matrix <- function(x, xnm, ...) {
-  return(c(
+  c(
     '```{r}',
     paste0('as_flextable.matrix(', xnm, ')'), # 3-dimension not working well now!!
-    '```', 
-    '<any-text>',
-    '\n\n'
-  ))
+    '```'
+  ) |> new(Class = 'md_lines')
 }
 
 
@@ -105,13 +99,13 @@ md_.list <- function(x, xnm, ...) {
 #' @export md_.numeric
 #' @export
 md_.numeric <- function(x, ...) {
-  c(paste(x, collapse = ', '), '\n\n')
+  paste(x, collapse = ', ') |> new(Class = 'md_lines')
 }
 
 #' @rdname md_
 #' @export md_.character
 #' @export
-md_.character <- function(x, ...) c(x, '\n\n')
+md_.character <- function(x, ...) x |> new(Class = 'md_lines')
 
 
 #' @rdname md_

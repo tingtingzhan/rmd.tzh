@@ -15,11 +15,11 @@ md_.bibentry <- function(x, ...) {
   
   pkg <- attr(x, which = 'package', exact = TRUE)
   
-  return(sprintf(
+  sprintf(
     fmt = '<u>**`%s`**</u> %s\n', 
     if (pkg == 'base') 'R' else pkg, 
     x |> bibentry2text()
-  ))
+  ) |> new(Class = 'md_lines')
   
 }
 

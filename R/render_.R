@@ -55,25 +55,20 @@ render_ <- function(
   nm <- names(x)
   if (!length(nm) || anyNA(nm) || !all(nzchar(nm))) stop('names must be complete')
   
-  md. <- nx |> 
+  md <- nx |> 
     seq_len() |>
     lapply(FUN = \(i) {
-      md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i))
-    })
-  
-  md_ <- .mapply(FUN = c, dots = list(
-    nm |> sprintf(fmt = '\n# %s\n'), # must use an extra '\n' to separate from previous 'character'
-    md.
-  ), MoreArgs = NULL) |>
-    unlist(recursive = TRUE, use.names = FALSE)
-  
-  bib <- md. |>
-    lapply(FUN = collect_attr_, which = 'bibentry') |>
-    do.call(what = c, args = _) |> # ?utils:::c.bibentry
-    unique() # ?utils:::unique.bibentry
+      c.md_lines(
+        nm[i] |> 
+          sprintf(fmt = '\n# %s\n') |> 
+          new(Class = 'md_lines'), # must use an extra '\n' to separate from previous 'character'
+        md_(x = x[[i]], xnm = sprintf(fmt = 'x[[%d]]', i))
+      )
+    }) |> 
+    do.call(what = c.md_lines, args = _)
   
   c(
-    r_yaml_(title = file, document = document, bib = bib, path = path, ...), 
+    r_yaml_(title = file, document = document, bib = md@bibentry, path = path, ...), 
     '\n', 
     r_css_(),
     '\n',
@@ -86,10 +81,10 @@ render_ <- function(
     'library(scales.tzh)',
     '```',
     '\n',
-    md_, 
+    md, 
     '\n',
     '# Citations',
-    md_ |> 
+    md |> 
       extract_pkg_name() |> 
       lapply(FUN = \(i) i |> citation() |> md_.bibentry()) |>
       unlist(use.names = FALSE)
@@ -120,42 +115,10 @@ render_ <- function(
   }
   
   return(invisible(fout))
+  
 }
 
 
-collect_attr_ <- function(x, which = c('bibentry', 'package')) {
-  # `x` is a 'list' with 'character' elements
-  
-  which <- match.arg(which)
-  
-  if (!is.recursive(x)) x <- list(x)
-    
-  z <- x |> 
-    lapply(FUN = attr, which = 'bibentry', exact = TRUE) 
-  
-  id <- (lengths(z, use.names = FALSE) > 0L)
-  if (!any(id)) return(invisible())
-  
-  ret <- z[id] |> # ?utils:::c.bibentry cannot take non-bibentry input
-    do.call(what = c, args = _) |> 
-    # ?base::c 
-    # ?utils:::c.bibentry
-    unique() 
-  # ?base::unique.default
-  # ?utils:::unique.bibentry
-  
-  # some specific checks
-  switch(which, bibentry = {
-    dup_key <- ret |>
-      unclass() |>
-      vapply(FUN = attr, which = 'key', exact = TRUE, FUN.VALUE = '') |>
-      anyDuplicated.default()
-    if (dup_key) stop('same key(s) from different bibliography items')
-  })
-  
-  return(ret)
-
-}
 
 
 
