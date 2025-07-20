@@ -14,7 +14,6 @@
 \alias{md_.pairwise.htest}
 \alias{md_.patchwork}
 \alias{md_.trellis}
-\alias{md_.consort}
 \alias{md_.flextable}
 \alias{md_.htmlwidget}
 \alias{md_.gg}
@@ -47,8 +46,6 @@ md_(x, ...)
 \method{md_}{patchwork}(x, xnm, ncol = 2L, ...)
 
 \method{md_}{trellis}(x, xnm, ...)
-
-\method{md_}{consort}(x, xnm, ...)
 
 \method{md_}{flextable}(x, xnm, ...)
 
@@ -118,13 +115,8 @@ list(
 ) |> render_(file = 'patchwork')
 
 library(lattice); Depth = equal.count(quakes$depth, number=8, overlap=.1)
-library(consort); data(dispos.data)
 list(
- '`trellis`' = xyplot(lat ~ long | Depth, data = quakes),
- '`consort`' = consort_plot(
-  data = dispos.data |> subset(subset = !(arm3 \%in\% 'Trt C')),
-  orders = list(c(trialno = 'Population'), c(exclusion = 'Excluded'), c(arm = 'Randomized')),
-  side_box = c('exclusion'))
+ '`trellis`' = xyplot(lat ~ long | Depth, data = quakes)
 ) |> render_(file = 'Vanilla Plot')
 
 library(ggplot2)
