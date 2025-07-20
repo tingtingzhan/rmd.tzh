@@ -79,20 +79,12 @@ md_.matrix <- function(x, xnm, ...) {
 #' @export md_.list
 #' @export
 md_.list <- function(x, xnm, ...) {
-  
-  ret0 <- x |> 
+  x |> 
     seq_along() |>
     lapply(FUN = \(i) {
       md_(x = x[[i]], xnm = paste0(xnm, '[[', i, ']]'), ...)
-    }) 
-  
-  ret <- ret0 |> 
-    unlist(recursive = FALSE, use.names = FALSE)
-  
-  attr(ret, which = 'bibentry') <- ret0 |> 
-    collect_attr_(which = 'bibentry')
-  return(ret)
-  
+    }) |>
+    do.call(what = c.md_lines, args = _)
 }
 
 #' @rdname md_
