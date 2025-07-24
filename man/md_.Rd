@@ -92,9 +92,12 @@ list('`xtabs`' = xtabs(~ cyl + vs, data = mtcars)) |> render_(file = 'xtabs')
 list('`matrix`' = VADeaths) |> render_(file = 'matrix')
 
 list(
- stringi = 'String manipulation by <u>**`R`**</u> package <u>**`stringi`**</u>.',
- texreg = 'R regression output to LaTeX or HTML by <u>**`R`**</u> package <u>**`texreg`**</u>.',
- stats = 'Linear regression by <u>**`R`**</u> package <u>**`stats`**</u>.'
+ stringi = 'String manipulation by <u>**`R`**</u> package <u>**`stringi`**</u>.' |> 
+   new(Class = 'md_lines', package = 'stringi'),
+ texreg = 'R regression output to LaTeX or HTML by <u>**`R`**</u> package <u>**`texreg`**</u>.' |> 
+   new(Class = 'md_lines', package = 'texreg'),
+ stats = 'Linear regression by <u>**`R`**</u> package <u>**`stats`**</u>.' |> 
+   new(Class = 'md_lines', package = 'stats')
 ) |> render_(file = 'bibentry')
 
 list(

@@ -127,3 +127,73 @@ render_ <- function(
 
 
 
+
+#' @title Which Package Created This Object?
+#' 
+#' @param x an R object
+#' 
+#' @returns 
+#' Function [fromPackage()] returns a \link[base]{character} scalar.
+#' 
+#' @keywords internal
+#' @importFrom stats getCall
+#' @importFrom utils getAnywhere
+#' @export
+fromPackage <- function(x) {
+  
+  if (isS4(x)) {
+    return(x |> 
+             class() |> 
+             attr(which = 'package', exact = TRUE))
+  } 
+  
+  f <- getCall(x)[[1L]]
+  pkg <- tryCatch(expr = {
+    f |>
+      eval() |> # function call could be un-exported, e.g., nlme:::lme.formula, and err
+      environment() |>
+      getNamespaceName()
+  }, error = \(e) {
+    aw <- f |>
+      as.character() |>
+      getAnywhere()
+    if (length(aw$where) > 1L) stop('really shouldnt happen...')
+    (aw$where) |>
+      gsub(pattern = '^namespace\\:', replacement = '')
+  })
+  
+  return(unname(pkg))
+  
+}
+
+
+#' @title Text for Package to Create an R Object
+#' 
+#' @param x returned object of [fromPackage()]
+#' 
+#' @returns 
+#' Function [pkg_text()] returns a \link[base]{character} scalar.
+#' 
+#' @keywords internal
+#' @export
+pkg_text <- function(x) {
+  
+  # `x` is the return of function [fromPackage()]
+  
+  # utils::installed.packages(priority = 'base') |> rownames() 
+  # also, RStudio do not have a delete button for base-packages
+  if (x %in% c('base', 'compiler', 'datasets', 'graphics', 'grDevices', 'grid', 'methods', 'parallel', 'splines', 'stats', 'stats4', 'tcltk', 'tools', 'utils')) {
+    return('<u>**`R`**</u>')
+  } 
+  
+  x |> 
+    sprintf(fmt = '<u>**`R`**</u> package <u>**`%s`**</u>')
+  
+}
+
+
+
+
+
+
+
