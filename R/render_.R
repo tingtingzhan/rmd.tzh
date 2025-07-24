@@ -55,7 +55,7 @@ render_ <- function(
   nm <- names(x)
   if (!length(nm) || anyNA(nm) || !all(nzchar(nm))) stop('names must be complete')
   
-  # **not** [md_.list()]
+  # **not** [md_.list()]; as we need section titles
   md <- nx |> 
     seq_len() |>
     lapply(FUN = \(i) {
@@ -76,7 +76,7 @@ render_ <- function(
     '\n',
     '```{r}',
     '#| include: false',
-    'options(bitmapType = \'cairo\')', # for correct unicode support; DO I STILL NEED THIS ??
+    'options(bitmapType = \'cairo\')', # for correct Unicode support
     'library(knitr)',
     'opts_chunk$set(echo = FALSE)',
     'library(flextable.tzh)', # also loads \CRANpkg{flextable}
@@ -86,8 +86,7 @@ render_ <- function(
     md, 
     '\n',
     '# Citations',
-    md |> 
-      extract_pkg_name() |> 
+    c('base', md@package) |> 
       lapply(FUN = \(i) i |> citation() |> md_.bibentry()) |>
       unlist(use.names = FALSE)
   ) |>
@@ -111,9 +110,7 @@ render_ <- function(
         normalizePath() |>
         sprintf(fmt = 'open \'%s\'') |> 
         lapply(FUN = system)
-      #paste0('open \'', normalizePath(bibfile), '\'') |> system()
     }
-    
   }
   
   return(invisible(fout))

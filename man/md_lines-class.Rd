@@ -3,16 +3,18 @@
 \docType{class}
 \name{md_lines-class}
 \alias{md_lines-class}
-\title{\linkS4class{md_lines}}
+\title{S4 Class \linkS4class{md_lines}}
 \description{
-..
+Text lines to be written to an R Markdown (\code{.md}) file.
 }
 \section{Slots}{
 
 \describe{
 \item{\code{.Data}}{\link[base]{character} scalar or \link[base]{vector}}
 
-\item{\code{bibentry}}{a \link[utils]{bibentry} object}
+\item{\code{bibentry}}{a \link[utils]{bibentry} object, via \link[methods]{setOldClass}}
+
+\item{\code{package}}{\link[base]{character} scalar or \link[base]{vector}}
 }}
 
 \keyword{internal}
