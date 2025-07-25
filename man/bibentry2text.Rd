@@ -23,7 +23,9 @@ in the following ways.
 }
 }
 \examples{
-'texreg' |> citation() |> format(style = 'text')
-'texreg' |> citation() |> bibentry2text()
+(bib_texreg = 'texreg' |> citation())
+bib_texreg |> format(style = 'text')
+bib_texreg |> url2doi() |> format(style = 'text')
+bib_texreg |> bibentry2text()
 }
 \keyword{internal}

@@ -43,8 +43,10 @@ md_.bibentry <- function(x, ...) {
 #' }
 #' 
 #' @examples
-#' 'texreg' |> citation() |> format(style = 'text')
-#' 'texreg' |> citation() |> bibentry2text()
+#' (bib_texreg = 'texreg' |> citation())
+#' bib_texreg |> format(style = 'text')
+#' bib_texreg |> url2doi() |> format(style = 'text')
+#' bib_texreg |> bibentry2text()
 #' @keywords internal
 #' @importFrom stringi stri_extract_all_regex stri_replace_all_fixed stri_replace_all_regex
 #' @export
@@ -68,7 +70,6 @@ bibentry2text <- function(x) {
   }
   
   x |> 
-    dropManual() |>
     sort_by.bibentry(y = 'year', decreasing = TRUE) |>
     url2doi() |>
     format(style = 'text') |> # ?utils:::format.bibentry
@@ -76,11 +77,6 @@ bibentry2text <- function(x) {
     # tzh does not know where '\n' comes from
     # or whether tzh is capable of removing it using parameters of ?utils:::format.bibentry  
     gsub(pattern = '\n', replacement = ' ') |> 
-    
-    # REMOVED!!!  do not do this
-    #gsub(pattern = '\"|\u201c|\u201d|\u2018|\u2019', replacement = '') |>
-    # '\u201c|\u201d' # quotation marks created by ?base::dQuote
-    # '\u2018|\u2019' # quotation marks created by ?base::sQuote
     
     format_doi(
       regex_pattern = '( doi:)(.*?)( <https://doi.org/)(.*?)(>)(.|,)', 
@@ -115,24 +111,23 @@ if (FALSE) { # disabled for ?devtools::check
 
 
 
-#' @title Handy Tools for \link[utils]{bibentry}
+#' @title Prioritize `doi` over `url` in \link[utils]{bibentry}
 #' 
 #' @param x a \link[utils]{bibentry} object
 #' 
 #' @details
-#' Function [url2doi()] converts a `url` field to `doi`, if it is a DOI URL.
+#' Function [url2doi()] converts a `url` field to `doi` field in \link[utils]{bibentry}, 
+#' if the `url` field is a DOI URL.
 #' 
 #' @returns
-#' All functions returns a \link[utils]{bibentry} object
+#' Function [url2doi()] returns a \link[utils]{bibentry} object.
 #' 
 #' @examples
 #' 'stringi' |> citation() # using doi field, correct
 #' 
 #' 'texreg' |> citation() # doi in url field, not good!
 #' 'texreg' |> citation() |> url2doi()
-#' @seealso `` utils:::`[.bibentry` ``
 #' @keywords internal
-#' @name citation_ext
 #' @export
 url2doi <- function(x) {
   
@@ -140,7 +135,7 @@ url2doi <- function(x) {
     unclass()
   # must!!
   # see # methods(class = 'bibentry')
-  # otherwise ?utils:::`[<-.bibentry` causes error hahaha
+  # otherwise both ?utils:::`[[.bibentry` and ?utils:::`[<-.bibentry` cause error hahaha
   
   x0[] <- x0 |> 
     lapply(FUN = url2doi.)
@@ -158,7 +153,8 @@ url2doi. <- function(b) {
   # (b = unclass(x)[[1L]]) # `x` is ?utils::bibentry object
   if (!length(b[['url']])) return(b)
   if (!grepl(pattern = 'https://doi.org/', x = b[['url']])) return(b)
-  doi <- gsub(pattern = 'https://doi.org/', replacement = '', x = b[['url']])
+  doi <- b[['url']] |>
+    gsub(pattern = 'https://doi.org/', replacement = '', x = _)
   if (length(b[['doi']])) {
     if (!identical(b[['doi']], doi)) stop()
     # else do nothing
@@ -166,82 +162,5 @@ url2doi. <- function(b) {
   b[['url']] <- NULL
   return(b)
 }
-
-
-
-
-
-#' @rdname citation_ext
-#' @details
-#' Function [dropManual()] removes the CRAN `Manual` citation, 
-#' if a package has one-or-more `Article` citation.
-#' @examples
-#' 'survival' |> citation()
-#' 'survival' |> citation() |> dropManual()
-#' @export
-dropManual <- function(x) {
-  
-  # tzh is not sure whether to define [subset.bibentry], i.e.,
-  # x |> subset.bibentry(subset = (bibtype != 'Manual'))
-  
-  nx <- length(x)
-  if (nx == 1L) return(x)
-  
-  bibtype <- x |>
-    unclass() |>
-    vapply(FUN = attr, which = 'bibtype', exact = TRUE, FUN.VALUE = '')
-  # see function ?utils:::`[[.bibentry` very very closely!!!
-  
-  isManual <- (bibtype == 'Manual')
-  if (!any(isManual)) return(x)
-    
-  return(x[!isManual, drop = FALSE])
-  
-}
-
-
-
-
-#' @title Sort \link[utils]{bibentry} By
-#' 
-#' @param x a \link[utils]{bibentry} object
-#' 
-#' @param y \link[base]{character} scalar
-#' 
-#' @param ... additional parameters of function \link[base]{order}
-#' 
-#' @details
-#' 
-#' Function [sort_by.bibentry()] sorts multiple citations of one package by some criteria (default being `'year'`).
-#' 
-#' @examples
-#' 'rmarkdown' |> citation()
-#' 'rmarkdown' |> citation() |> sort_by(y = 'year', decreasing = TRUE)
-#' @export sort_by.bibentry
-#' @export
-sort_by.bibentry <- function(x, y = 'year', ...) {
-  
-  nx <- length(x)
-  if (nx == 1L) return(x)
-  
-  if (!is.character(y) || length(y) != 1L || is.na(y) || !nzchar(y)) stop('`y` must be len-1 character')
-  
-  o <- x |>
-    unclass() |> # to avoid using ?utils:::`[[.bibentry`
-    vapply(FUN = \(i) i[[y]], FUN.VALUE = '') |> # all fields are \link[base]{character}
-    order(...)
-  
-  # um, if (y == 'bibtype'), we need to grab the base::attr ..
-
-  return(x[o, drop = FALSE]) # utils:::`[.bibentry`
-  
-}
-
-
-
-
-
-
-
 
 

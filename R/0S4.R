@@ -62,11 +62,13 @@ c.md_lines <- function(...) {
     bib <- bib_[bid] |> # ?utils:::c.bibentry cannot take non-bibentry input
       do.call(what = c, args = _) |> # ?utils:::c.bibentry
       unique() # ?utils:::unique.bibentry
-    dup_key <- bib |>
+    key <- bib |>
       unclass() |> # to use ?base::`[[` instead of ?utils:::`[[.bibentry` (for ?base::vapply)
-      vapply(FUN = attr, which = 'key', exact = TRUE, FUN.VALUE = '') |>
-      anyDuplicated.default()
-    if (dup_key) stop('same key(s) from different bibliography items')
+      lapply(FUN = attr, which = 'key', exact = TRUE)
+    # forget `key` in ?utils::bibentry, then no attr(, which = 'key')
+    if (any(lengths(key, use.names = FALSE) != 1L)) stop('illegal or missing `key`')
+    # let `key` stay a ?base::list
+    if (anyDuplicated.default(key)) stop('same key(s) from different bibliography items')
   } 
   
   pkg <- x |>

@@ -87,6 +87,7 @@ render_ <- function(
     '\n',
     '# Citations',
     c('base', md@package) |> 
+      sort.int() |>
       lapply(FUN = \(i) i |> citation() |> md_.bibentry()) |>
       unlist(use.names = FALSE)
   ) |>
