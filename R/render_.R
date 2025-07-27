@@ -76,8 +76,6 @@ render_ <- function(
     '\n',
     '```{r}',
     '#| include: false',
-    # 'options(bitmapType = \'cairo\')', # for correct Unicode support
-    # 'library(knitr)',
     'knitr::opts_chunk$set(echo = FALSE)',
     'library(flextable.tzh)', # also loads \CRANpkg{flextable}
     'library(scales.tzh)',
