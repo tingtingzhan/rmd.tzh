@@ -36,6 +36,8 @@ md_ <- function(x, ...) {
 #' on how to stack `'plotly'` objects 
 #' (via function \link[plotly]{subplot}).
 #' 
+#' As for now (early 2025), tzh prefers package \pkg{patchwork} over function `ggpubr::ggarrange`.
+#' 
 #' @examples
 #' library(lattice); Depth = equal.count(quakes$depth, number=8, overlap=.1)
 #' library(ggplot2)
@@ -48,12 +50,17 @@ md_ <- function(x, ...) {
 #'     popup = c('white house', 'pentagon')
 #'   )
 #' 
+#' library(patchwork) # ?patchwork::`patchwork-package`
+#' p1 = ggplot(mtcars) + geom_point(aes(mpg, disp))
+#' p2 = ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+#' 
 #' list(
 #'  '`htest`' = t.test(mpg ~ am, data = mtcars),
 #'  '`power.htest`' = power.t.test(power = .90, delta = 1),
 #'  '`trellis` from package `lattice`' = xyplot(lat ~ long | Depth, data = quakes),
 #'  '`ggplot2::ggplot`' = ggplot() + geom_point(data = mtcars, mapping = aes(wt, mpg)),
 #'  '`GGally::ggmatrix`, an `S7_object`' = GGally::ggpairs(swiss, columns = c(1:2, 6)),
+#'  '`patchwork` from package `patchwork`' = p1 + p2,
 #'  '`flextable::flextable`' = Formaldehyde |> flextable::flextable(),
 #'  '`magick-image` from package `magick`' = magick::wizard,
 #'  '`reactable::reactable`, an `htmlwidget`' = Formaldehyde |> reactable::reactable(),
