@@ -12,6 +12,10 @@
   # https://stackoverflow.com/questions/63613301/r-cmd-check-note-unable-to-verify-current-time
   # to disable "checking for future file timestamps" in R Check
   
+  options(
+    bitmapType = 'cairo' # for correct Unicode support; important!!!
+  )
+
   theme_set(
     theme_bw(
       base_size = 11, 

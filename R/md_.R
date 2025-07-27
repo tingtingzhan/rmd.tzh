@@ -170,7 +170,7 @@ md_.xtabs <- function(x, xnm, ...) {
 md_.matrix <- function(x, xnm, ...) {
   c(
     '```{r}',
-    paste0('as_flextable.matrix(', xnm, ')'), # 3-dimension not working well now!!
+    paste0('as_flextable.matrix(', xnm, ')'),
     '```'
   ) |> new(Class = 'md_lines')
 }

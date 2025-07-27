@@ -1,6 +1,10 @@
 
 
-#' @rdname md_
+#' @title Markdown Lines of \link[utils]{bibentry} Object
+#' 
+#' @param x a \link[utils]{bibentry} object
+#' 
+#' @param ... additional parameters, currently of no use
 #' 
 #' @examples 
 #' list(
@@ -12,6 +16,7 @@
 #'    new(Class = 'md_lines', package = 'stats')
 #' ) |> render_(file = 'bibentry')
 #' 
+#' @keywords internal
 #' @export md_.bibentry
 #' @export
 md_.bibentry <- function(x, ...) {
@@ -20,9 +25,10 @@ md_.bibentry <- function(x, ...) {
   
   sprintf(
     fmt = '<u>**`%s`**</u> %s\n', 
-    if (pkg == 'base') 'R' else pkg, 
+    switch(pkg, base = 'R', pkg), 
     x |> bibentry2text()
-  ) |> new(Class = 'md_lines')
+  ) |> 
+    new(Class = 'md_lines')
   
 }
 
@@ -103,7 +109,8 @@ if (FALSE) { # disabled for ?devtools::check
   # grep('\u201c', tmp)
   
   
-  tmp = ct |> mclapply(FUN = md_.bibentry, mc.cores = detectCores())
+  tmp = ct |> 
+    mclapply(FUN = md_.bibentry, mc.cores = detectCores())
   tmp[lengths(tmp) > 1L]
 } 
 
