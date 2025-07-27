@@ -5,8 +5,8 @@ md_plot_ <- function(x, xnm, ...) {
     attr(x, which = 'text', exact = TRUE),
     '\n',
     '```{r}',
-    (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
-    (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
+    (attr(x, which = 'fig-height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
+    (attr(x, which = 'fig-width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
     sprintf(fmt = '%s |> plot()', xnm),
     # invokes
     # ?lattice:::plot.trellis

@@ -2,13 +2,20 @@
 
 md_print0_ <- function(x, xnm, ...) {
   
-  c(
-    attr(x, which = 'text', exact = TRUE),
-    '\n',
-    '```{r comment = NA}',
+  z1 <- (attr(x, which = 'text', exact = TRUE) %||% character()) |>
+    new(Class = 'md_lines')
+  
+  z2 <- c(
+    '```{r}',
     '#| warning: false', 
-    (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
-    (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
+    '#| comment:',
+    (attr(x, which = 'fig-height', exact = TRUE) %||% 4) |> 
+      sprintf(fmt = '#| fig-height: %.1f'),
+    (attr(x, which = 'fig-width', exact = TRUE) %||% 7) |> 
+      sprintf(fmt = '#| fig-width: %.1f'),
+    x |>
+      attr(which = 'fig.cap', exact = TRUE) |> 
+      sprintf(fmt = '#| fig-cap: %s'), # len-0 compatible
     
     xnm, # print, but not say print
     # must *not* say print, to correctly invoke
@@ -23,25 +30,15 @@ md_print0_ <- function(x, xnm, ...) {
     # ?GGally:::print.ggmatrix
     # ?magick:::`print.magick-image`
     # etc.
+    
     '```'
   ) |> new(Class = 'md_lines')
-}
-
-
-md_print_ <- function(x, xnm, ...) {
   
-  c(
-    attr(x, which = 'text', exact = TRUE),
-    '\n',
-    '```{r comment = NA}',
-    '#| warning: false', 
-    (attr(x, which = 'fig.height', exact = TRUE) %||% 4) |> sprintf(fmt = '#| fig-height: %.1f'),
-    (attr(x, which = 'fig.width', exact = TRUE) %||% 7) |> sprintf(fmt = '#| fig-width: %.1f'),
-    xnm |> sprintf(fmt = '%s |> print()'),
-    # currently no object **requires** [md_print_()]
-    '```'
-  ) |> new(Class = 'md_lines')
+  return(c(z1, z2)) # [c.md_lines()]
+  
 }
+
+
 
 
 
@@ -81,22 +78,22 @@ md_print_ <- function(x, xnm, ...) {
 #' 
 #' @export md_.flextable
 #' @export
-md_.flextable <- md_print0_ # [md_print_()] *not* okay!!
+md_.flextable <- md_print0_
 
 #' @rdname md_
 #' @export md_.htmlwidget
 #' @export
-md_.htmlwidget <- md_print0_ # [md_print_()] *not* okay!!
+md_.htmlwidget <- md_print0_
 
 #' @rdname md_
 #' @export md_.gg
 #' @export
-md_.gg <- md_print0_ # [md_print_()] also okay
+md_.gg <- md_print0_
 
 #' @rdname md_
 #' @export md_.S7_object
 #' @export
-md_.S7_object <- md_print0_ # [md_print_()] also okay
+md_.S7_object <- md_print0_
 # since GGally 2.3.0 on 2025-07-17
 # 'ggmatrix' no longer inherits from 'gg' in \CRANpkg{ggplot2}
 # but from ?S7::S7_object
@@ -105,19 +102,19 @@ md_.S7_object <- md_print0_ # [md_print_()] also okay
 #' @rdname md_
 #' @export md_.htest
 #' @export
-md_.htest <- md_print0_ # [md_print_()] also okay
+md_.htest <- md_print0_
 
 #' @rdname md_
 #' @method md_ power.htest
 #' @export md_.power.htest
 #' @export
-md_.power.htest <- md_print0_ # [md_print_()] also okay
+md_.power.htest <- md_print0_
 
 
 #' @rdname md_
 #' @export `md_.magick-image`
 #' @export
-`md_.magick-image` <- md_print0_ # [md_print_()] also okay
+`md_.magick-image` <- md_print0_
 # ?magick::image_write; write to a file
 # ?magick::image_info; height and width
 
