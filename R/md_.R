@@ -87,7 +87,7 @@ md_.default <- function(x, xnm, ...) {
     (attr(x, which = 'fig-width', exact = TRUE) %||% 7) |> 
       sprintf(fmt = '#| fig-width: %.1f'),
     x |>
-      attr(which = 'fig.cap', exact = TRUE) |> 
+      attr(which = 'fig-cap', exact = TRUE) |> 
       sprintf(fmt = '#| fig-cap: %s'), # len-0 compatible
     
     xnm, # print, but not say print
