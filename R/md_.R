@@ -82,13 +82,18 @@ md_.default <- function(x, xnm, ...) {
     '```{r}',
     '#| warning: false', 
     '#| comment:',
-    (attr(x, which = 'fig-height', exact = TRUE) %||% 4) |> 
+    
+    # len-0 compatible
+    x |>
+      attr(which = 'fig-height', exact = TRUE) |> 
       sprintf(fmt = '#| fig-height: %.1f'),
-    (attr(x, which = 'fig-width', exact = TRUE) %||% 7) |> 
+    x |>
+      attr(which = 'fig-width', exact = TRUE) |> 
       sprintf(fmt = '#| fig-width: %.1f'),
     x |>
       attr(which = 'fig-cap', exact = TRUE) |> 
-      sprintf(fmt = '#| fig-cap: %s'), # len-0 compatible
+      sprintf(fmt = '#| fig-cap: %s'),
+    # end of len-0 compatible
     
     xnm, # print, but not say print
     # must *not* say print, to correctly invoke
