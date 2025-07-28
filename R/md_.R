@@ -174,7 +174,8 @@ md_.matrix <- function(x, xnm, ...) {
   c(
     '```{r}',
     '#| echo: false', 
-    paste0('as_flextable.matrix(', xnm, ')'),
+    xnm |> 
+      sprintf(fmt = 'as_flextable.matrix(%s)'),
     '```'
   ) |> new(Class = 'md_lines')
 }
