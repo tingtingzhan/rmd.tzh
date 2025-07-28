@@ -1,10 +1,4 @@
 
-
-# '<any-text>'
-# 'word_document' needs *more* than '\n' to correctly separate two flextable's.  
-# 'html_document' needs nothing, and will take '<>' as meaningless html tag (thus ignored) :)
-
-
 #' @title Markdown Script
 #' 
 #' @description
