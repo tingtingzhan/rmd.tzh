@@ -92,7 +92,11 @@ render_ <- function(
     writeLines(con = frmd, sep = '\n')
   
   render(input = frmd, output_file = fout, intermediates_dir = path, quiet = TRUE)
-  paste0('open \'', normalizePath(fout), '\'') |> system()
+  
+  fout |> 
+    normalizePath() |> 
+    sprintf(fmt = 'open \'%s\'') |> 
+    system()
   
   if (rmd.rm) file.remove(frmd) else {
     frmd |>
