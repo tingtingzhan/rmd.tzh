@@ -76,8 +76,9 @@ render_ <- function(
     '\n',
     '```{r}',
     '#| include: false',
-    'knitr::opts_chunk$set(echo = FALSE)',
     'library(flextable.tzh)', # also loads \CRANpkg{flextable}
+    # \pkg{flextable.tzh} Imports \pkg{rmd.tzh} !!!!!!!
+    # thus cannot put `flextable.tzh` in Depends/Imports field of \pkg{rmd.tzh} !!!!!
     '```',
     '\n',
     md, 

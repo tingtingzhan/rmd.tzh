@@ -80,6 +80,7 @@ md_.default <- function(x, xnm, ...) {
   
   z2 <- c(
     '```{r}',
+    '#| echo: false', 
     '#| warning: false', 
     '#| comment:',
     
@@ -140,6 +141,7 @@ md_.default <- function(x, xnm, ...) {
 md_.data.frame <- function(x, xnm, ...) {
   c(
     '```{r}',
+    '#| echo: false', 
     xnm |> sprintf(fmt = '%s |> format4flextable() |> flextable() |> autofit(part = \'all\')'),
     '```'
   ) |> new(Class = 'md_lines')
@@ -155,6 +157,7 @@ md_.data.frame <- function(x, xnm, ...) {
 md_.xtabs <- function(x, xnm, ...) {
   c(
     '```{r}',
+    '#| echo: false', 
     xnm |> sprintf(fmt = '%s |> as_flextable() |> autofit(part = \'all\')'),
     '```'
   ) |> new(Class = 'md_lines')
@@ -170,6 +173,7 @@ md_.xtabs <- function(x, xnm, ...) {
 md_.matrix <- function(x, xnm, ...) {
   c(
     '```{r}',
+    '#| echo: false', 
     paste0('as_flextable.matrix(', xnm, ')'),
     '```'
   ) |> new(Class = 'md_lines')
