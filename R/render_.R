@@ -78,7 +78,6 @@ render_ <- function(
     '#| include: false',
     'knitr::opts_chunk$set(echo = FALSE)',
     'library(flextable.tzh)', # also loads \CRANpkg{flextable}
-    'library(scales.tzh)',
     '```',
     '\n',
     md, 
