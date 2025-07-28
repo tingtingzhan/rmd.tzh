@@ -57,10 +57,10 @@ label_pvalue_sym <- function(...) {
       sym <- symnum(
         x, corr = FALSE, na = FALSE, 
         cutpoints = c(0, .001, .01, .05, .1, 1), 
-        symbols = if (getOption('bitmapType') %in% c('cairo')) {
-          #c('\u2605\u2605\u2605', '\u2605\u2605', '\u2605', '\u2606', '') # star
+        symbols = 
+          # c("***", "**", "*", ".", " ")
+          # c('\u2605\u2605\u2605', '\u2605\u2605', '\u2605', '\u2606', '') # star
           c('\u2b51\u2b51\u2b51', '\u2b51\u2b51', '\u2b51', '\u2b52', '') # small star
-        } else c("***", "**", "*", ".", " ")
       ) # see ?stats::printCoefmat
       ret[] <- ret |> 
         paste(sym) |> 
