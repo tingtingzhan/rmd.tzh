@@ -78,6 +78,18 @@ md_.default <- function(x, xnm, ...) {
   z1 <- (attr(x, which = 'text', exact = TRUE) %||% character()) |>
     new(Class = 'md_lines')
   
+  htest <- x |> 
+    attr(which = 'htest', exact = TRUE)
+  htest_text <- if (inherits(htest, what = 'htest')) {
+    sprintf(fmt = '%s (%s) %s',
+            htest$method,
+            htest$data.name,
+            htest$p.value |> label_pvalue_sym(add_p = TRUE)())
+  } # else NULL
+  
+  fig_cap <- x |>
+    attr(which = 'fig-cap', exact = TRUE)
+
   z2 <- c(
     '```{r}',
     '#| echo: false', 
@@ -91,8 +103,7 @@ md_.default <- function(x, xnm, ...) {
     x |>
       attr(which = 'fig-width', exact = TRUE) |> 
       sprintf(fmt = '#| fig-width: %.1f'),
-    x |>
-      attr(which = 'fig-cap', exact = TRUE) |> 
+    (fig_cap %||% htest_text) |> 
       sprintf(fmt = '#| fig-cap: %s'),
     # end of len-0 compatible
     
