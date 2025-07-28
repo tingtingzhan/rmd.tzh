@@ -13,13 +13,15 @@
   # to disable "checking for future file timestamps" in R Check
   
   options(
-    bitmapType = 'cairo' # for correct Unicode support; important!!!
+    bitmapType = 'cairo' 
+    # for correct Unicode support; important!!!
+    # default was 'quartz'
   )
 
   theme_set(
     theme_bw(
       base_size = 11, 
-      base_family = 'Arial Unicode MS', 
+      #base_family = 'Arial Unicode MS', # seems not needed!!!
       base_line_size = 11/22, 
       base_rect_size = 11/22
     ) %+replace% 

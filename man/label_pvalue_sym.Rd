@@ -18,33 +18,26 @@ Label \eqn{p}-values with significance symbol.
 \details{
 Pipeline:
 
-Step 1: \link[scales]{label_pvalue}.
+Step 1: Apply function \link[scales]{label_pvalue}.
 
 Step 2: Drop leading zeros.
 
-Step 3: \link[stats]{symnum} (also see function \link[stats]{printCoefmat}).
+Step 3: Apply function \link[stats]{symnum} (also see function \link[stats]{printCoefmat}).
 }
 \note{
 Function \link[scales]{label_pvalue} is much prettier and more flexible than function \link[base]{format.pval}.
 
 Function \code{\link[=label_pvalue_sym]{label_pvalue_sym()}} is used so extensively,
-therefore tzh keeps it in \pkg{rmd.tzh} instead of \pkg{scales.tzh}
+therefore tzh keeps it in \pkg{rmd.tzh} instead of \pkg{scales.tzh}.
 }
 \examples{
-p1 = p2 = c(pi^-100, .02, .05, .1, .9999, NA_real_)
-
-dim(p1) = c(2, 3); p1
-p1 |> label_pvalue_sym()() # attr-dim kept
-p1 |> label_pvalue_sym(add_p = TRUE)()
-
-names(p2) = letters[1:6]; p2
-p2 |> label_pvalue_sym()() # attr-name kept
+p = c(a = pi^-100, b = .02, c = .05, d = .1, e = .9999, f = NA_real_)
+p |> label_pvalue_sym()()
+p |> label_pvalue_sym(add_p = TRUE)()
 
 # below: exception handling
-double() |> scales::label_pvalue()() 
-# do not like!
+double() |> scales::label_pvalue()() # do not like!
 # ?scales::pvalue is bad; ?scales::number is fine!
-
-double() |> label_pvalue_sym()()
+double() |> label_pvalue_sym()() # nice!
 }
 \keyword{internal}
