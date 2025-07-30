@@ -39,6 +39,7 @@ setClass(Class = 'md_lines', contains = 'character', slots = c(
 #' 
 #' 
 #' @keywords internal
+#' @importFrom utils installed.packages
 #' @export c.md_lines
 #' @export
 c.md_lines <- function(...) {
@@ -75,11 +76,7 @@ c.md_lines <- function(...) {
     lapply(FUN = slot, name = 'package') |>
     unlist(recursive = TRUE, use.names = FALSE) |>
     unique.default() |>
-    setdiff(y = c(
-      # utils::installed.packages(priority = 'base') |> rownames() 
-      # also, RStudio do not have a delete button for base-packages
-      c('base', 'compiler', 'datasets', 'graphics', 'grDevices', 'grid', 'methods', 'parallel', 'splines', 'stats', 'stats4', 'tcltk', 'tools', 'utils')
-    ))
+    setdiff(y = installed.packages(priority = 'base') |> rownames())
   
   new(Class = 'md_lines', z, bibentry = bib, package = pkg)
   

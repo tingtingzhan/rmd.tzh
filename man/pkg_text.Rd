@@ -7,12 +7,15 @@
 pkg_text(x)
 }
 \arguments{
-\item{x}{returned object of \code{\link[=fromPackage]{fromPackage()}}}
+\item{x}{\link[base]{character} scalar, the returned object of function \code{\link[=fromPackage]{fromPackage()}}}
 }
 \value{
 Function \code{\link[=pkg_text]{pkg_text()}} returns a \link[base]{character} scalar.
 }
 \description{
 Text for Package to Create an R Object
+}
+\note{
+Function \code{\link[=pkg_text]{pkg_text()}} is not designed for use in package \pkg{rmd.tzh}, but for \pkg{ecip}.
 }
 \keyword{internal}

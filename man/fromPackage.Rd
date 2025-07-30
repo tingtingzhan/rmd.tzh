@@ -15,4 +15,7 @@ Function \code{\link[=fromPackage]{fromPackage()}} returns a \link[base]{charact
 \description{
 Which Package Created This Object?
 }
+\note{
+Function \code{\link[=fromPackage]{fromPackage()}} is not designed for use in package \pkg{rmd.tzh}, but for \pkg{ecip}.
+}
 \keyword{internal}

@@ -138,9 +138,12 @@ render_ <- function(
 #' @returns 
 #' Function [fromPackage()] returns a \link[base]{character} scalar.
 #' 
+#' @note
+#' Function [fromPackage()] is not designed for use in package \pkg{rmd.tzh}, but for \pkg{ecip}.
+#' 
 #' @keywords internal
 #' @importFrom stats getCall
-#' @importFrom utils getAnywhere
+#' @importFrom utils getAnywhere installed.packages
 #' @export
 fromPackage <- function(x) {
   
@@ -165,29 +168,28 @@ fromPackage <- function(x) {
       gsub(pattern = '^namespace\\:', replacement = '')
   })
   
-  return(unname(pkg))
+  pkg |>
+    # unname() |> # ?base::setdiff removes names anyway
+    setdiff(y = installed.packages(priority = 'base') |> rownames())
   
 }
 
 
 #' @title Text for Package to Create an R Object
 #' 
-#' @param x returned object of [fromPackage()]
+#' @param x \link[base]{character} scalar, the returned object of function [fromPackage()]
 #' 
 #' @returns 
 #' Function [pkg_text()] returns a \link[base]{character} scalar.
+#' 
+#' @note
+#' Function [pkg_text()] is not designed for use in package \pkg{rmd.tzh}, but for \pkg{ecip}.
 #' 
 #' @keywords internal
 #' @export
 pkg_text <- function(x) {
   
-  # `x` is the return of function [fromPackage()]
-  
-  # utils::installed.packages(priority = 'base') |> rownames() 
-  # also, RStudio do not have a delete button for base-packages
-  if (x %in% c('base', 'compiler', 'datasets', 'graphics', 'grDevices', 'grid', 'methods', 'parallel', 'splines', 'stats', 'stats4', 'tcltk', 'tools', 'utils')) {
-    return('<u>**`R`**</u>')
-  } 
+  if (!length(x)) return('<u>**`R`**</u>')
   
   x |> 
     sprintf(fmt = '<u>**`R`**</u> package <u>**`%s`**</u>')
