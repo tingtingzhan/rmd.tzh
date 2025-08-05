@@ -2,16 +2,19 @@
 % Please edit documentation in R/key_set.R
 \name{key<-}
 \alias{key<-}
-\title{key set}
+\title{Set Key of \link[utils]{bibentry} and/or \link[utils]{citation}}
 \usage{
 key(x) <- value
 }
 \arguments{
-\item{x}{..}
+\item{x}{a \link[utils]{bibentry} and/or \link[utils]{citation}}
 
-\item{value}{..}
+\item{value}{\link[base]{character} scalar}
+}
+\value{
+This syntactic sugar returns a \link[utils]{bibentry} and/or \link[utils]{citation} object.
 }
 \description{
-key set
+Set Key of \link[utils]{bibentry} and/or \link[utils]{citation}
 }
 \keyword{internal}

@@ -1,11 +1,14 @@
 
 
 
-#' @title key set
+#' @title Set Key of \link[utils]{bibentry} and/or \link[utils]{citation}
 #' 
-#' @param x ..
+#' @param x a \link[utils]{bibentry} and/or \link[utils]{citation}
 #' 
-#' @param value ..
+#' @param value \link[base]{character} scalar
+#' 
+#' @returns 
+#' This syntactic sugar returns a \link[utils]{bibentry} and/or \link[utils]{citation} object.
 #' 
 #' @keywords internal
 #' @export
