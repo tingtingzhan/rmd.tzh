@@ -23,6 +23,7 @@
   nx <- length(x)
   
   if (!is.character(value) || anyNA(value) || any(!nzchar(value))) stop('illegal `value`')
+  value <- unique.default(value)
   nv <- length(value)
   
   if (nx > 1L && nv == 1L) {
