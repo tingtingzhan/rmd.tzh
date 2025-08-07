@@ -15,4 +15,8 @@ Function \code{\link[=package2key]{package2key()}} returns a \link[utils]{citati
 \description{
 Use Package as Key in \link[utils]{citation}
 }
+\examples{
+'rmarkdown' |> citation() |> toBibtex()
+'rmarkdown' |> citation() |> package2key() |> toBibtex()
+}
 \keyword{internal}

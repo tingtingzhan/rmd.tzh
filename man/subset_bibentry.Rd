@@ -27,13 +27,11 @@ Function \code{\link[=subset.citation]{subset.citation()}} performs \code{\link[
 then retains \code{attr(., which = 'package')}.
 }
 \examples{
-(bib_survival = 'survival' |> citation())
-bib_survival |> subset(subset = (bibtype != 'Manual'))
-bib_survival |> subset(subset = (bibtype == 'Manual'))
+(bib_rmarkdown = 'rmarkdown' |> citation())
+bib_rmarkdown |> subset(subset = (bibtype != 'Manual'))
+bib_rmarkdown |> subset(subset = (bibtype == 'Manual'))
 
 (bib_ggplot2 = 'ggplot2' |> citation())
-bib_ggplot2 |> subset(subset = (bibtype != 'Manual'))
-bib_ggplot2 |> subset(subset = (bibtype == 'Manual'))
 bib_ggplot2 |> subset(subset = (bibtype == 'Book'))
 
 }
