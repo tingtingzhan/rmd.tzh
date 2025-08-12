@@ -79,6 +79,8 @@ render_ <- function(
     'library(flextable.tzh)', # also loads \CRANpkg{flextable}
     # \pkg{flextable.tzh} Imports \pkg{rmd.tzh} !!!!!!!
     # thus cannot put `flextable.tzh` in Depends/Imports field of \pkg{rmd.tzh} !!!!!
+    'library(ggplot2)',
+    'theme_minimal() |> theme_set()',
     '```',
     '\n',
     md, 
