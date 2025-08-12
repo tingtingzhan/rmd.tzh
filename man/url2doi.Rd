@@ -20,7 +20,7 @@ Function \code{\link[=url2doi]{url2doi()}} converts a \code{url} field to \code{
 if the \code{url} field is a DOI URL.
 }
 \examples{
-'stringi' |> citation() # using doi field, correct
+'scales' |> citation() # using doi field, correct
 
 'texreg' |> citation() # doi in url field, not good!
 'texreg' |> citation() |> url2doi()

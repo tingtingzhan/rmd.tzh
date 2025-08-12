@@ -8,8 +8,6 @@
 #' 
 #' @examples 
 #' list(
-#'  stringi = 'String manipulation by <u>**`R`**</u> package <u>**`stringi`**</u>.' |> 
-#'    new(Class = 'md_lines', package = 'stringi'),
 #'  texreg = 'R regression output to LaTeX or HTML by <u>**`R`**</u> package <u>**`texreg`**</u>.' |> 
 #'    new(Class = 'md_lines', package = 'texreg'),
 #'  stats = 'Linear regression by <u>**`R`**</u> package <u>**`stats`**</u>.' |> 
@@ -26,71 +24,15 @@ md_.bibentry <- function(x, ...) {
   sprintf(
     fmt = '<u>**`%s`**</u> %s\n', 
     switch(pkg, base = 'R', pkg), 
-    x |> bibentry2text()
+    pkg |>
+      citation() |>
+      url2doi() |> 
+      format(style = 'text') # utils:::format.bibentry
   ) |> 
     new(Class = 'md_lines')
   
 }
 
-
-
-#' @title Slight Improvement over `utils:::format.bibentry`
-#' 
-#' @param x a \link[utils]{bibentry} object
-#' 
-#' @details
-#' Function [bibentry2text()] beautifies the output from 
-#' function `utils:::format.bibentry(., style = 'text')`
-#' in the following ways.
-#' \itemize{
-#' \item{Line break `'\n'` is replaced by a white space;}
-#' \item{Fancy quotes \eqn{``}, \eqn{''}, \eqn{`} and \eqn{'} are removed;}
-#' \item{doi entries are shown as URLs with labels in markdown grammar.}
-#' }
-#' 
-#' @examples
-#' (bib_texreg = 'texreg' |> citation())
-#' bib_texreg |> format(style = 'text')
-#' bib_texreg |> url2doi() |> format(style = 'text')
-#' bib_texreg |> bibentry2text()
-#' @keywords internal
-#' @importFrom stringi stri_extract_all_regex stri_replace_all_fixed stri_replace_all_regex
-#' @export
-bibentry2text <- function(x) {
-  
-  format_doi <- function(x, regex_pattern, fixed_pattern, fixed_replacement) {
-    
-    has_doi <- x |> grepl(pattern = regex_pattern)
-    
-    doi <- x[has_doi] |> 
-      stri_extract_all_regex(pattern = regex_pattern)
-    if (!all(lengths(doi) == 1L)) stop('one citation cannot have >1 doi')
-    
-    x[has_doi] <- doi |>
-      unlist() |>
-      stri_replace_all_fixed(pattern = fixed_pattern, replacement = fixed_replacement, vectorize_all = FALSE) |> # to get [topic](url)
-      stri_replace_all_regex(str = x[has_doi], pattern = regex_pattern)
-    
-    return(x)
-    
-  }
-  
-  x |> 
-    sort_by.bibentry(y = 'year', decreasing = TRUE) |>
-    url2doi() |>
-    format(style = 'text') |> # ?utils:::format.bibentry
-    
-    # tzh does not know where '\n' comes from
-    # or whether tzh is capable of removing it using parameters of ?utils:::format.bibentry  
-    gsub(pattern = '\n', replacement = ' ') |> 
-    
-    format_doi(
-      regex_pattern = '( doi:)(.*?)( <https://doi.org/)(.*?)(>)(.|,)', 
-      fixed_pattern = c(' doi:', ' <https://doi.org/', '>'), 
-      fixed_replacement = c(' [doi:', '](https://doi.org/', ')')
-    )
-  
-}
 
 
 
@@ -130,7 +72,7 @@ if (FALSE) { # disabled for ?devtools::check
 #' Function [url2doi()] returns a \link[utils]{bibentry} object.
 #' 
 #' @examples
-#' 'stringi' |> citation() # using doi field, correct
+#' 'scales' |> citation() # using doi field, correct
 #' 
 #' 'texreg' |> citation() # doi in url field, not good!
 #' 'texreg' |> citation() |> url2doi()

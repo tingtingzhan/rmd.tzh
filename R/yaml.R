@@ -61,7 +61,7 @@ r_yaml_ <- function(
       if (file.exists(bibfile)) file.remove(bibfile) # without warning
       bibfile |> file.create()
       bibfile |> sink()
-      bib |> toBibtex() |> print() # here it is *difficult* to use my [bibentry2text] !!!!!
+      bib |> toBibtex() |> print()
       sink()
       'bibliography: bibliography.bib' # written to YAML
     }, # else NULL

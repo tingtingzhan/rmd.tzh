@@ -16,8 +16,6 @@ Markdown Lines of \link[utils]{bibentry} Object
 }
 \examples{
 list(
- stringi = 'String manipulation by <u>**`R`**</u> package <u>**`stringi`**</u>.' |> 
-   new(Class = 'md_lines', package = 'stringi'),
  texreg = 'R regression output to LaTeX or HTML by <u>**`R`**</u> package <u>**`texreg`**</u>.' |> 
    new(Class = 'md_lines', package = 'texreg'),
  stats = 'Linear regression by <u>**`R`**</u> package <u>**`stats`**</u>.' |> 
