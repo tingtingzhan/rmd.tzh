@@ -101,21 +101,19 @@ md_.default <- function(x, xnm, ...) {
       sprintf(fmt = '#| fig-cap: %s'),
     # end of len-0 compatible
     
-    xnm, # print, but not say print
+    xnm, 
+    # print, but not say print!!!!
     # must *not* say print, to correctly invoke
-    # ?flextable:::print.flextable
-    # ?htmlwidgets:::print.htmlwidget
+    # ?flextable:::print.flextable # packageDate('flextable') # "2025-05-31"
+    # ?htmlwidgets:::print.htmlwidget # packageDate('htmlwidgets') # "2023-12-06"
     # etc.
     
-    # okay to say or not say print, i.e., `xnm |> sprintf(fmt = '%s |> print()')`
+    # okay to say or not say print
+    # i.e., `xnm |> sprintf(fmt = '%s |> print()')`
     # ?stats:::print.htest
     # ?stats:::print.power.htest
     # ?ggplot2:::print.ggplot
-    # ?S7:::print.S7_object
-    ### since GGally 2.3.0 on 2025-07-17
-    ### 'ggmatrix' no longer inherits from 'gg' in \CRANpkg{ggplot2}
-    ### but from ?S7::S7_object
-    ### actually, \CRANpkg{ggplot2} v4.0.0 is switching to \CRANpkg{S7} !!! 
+    # ?S7:::print.S7_object # \CRANpkg{ggplot2} v4.0.0 is switching to \CRANpkg{S7} !!! 
     # ?magick:::`print.magick-image`
     ### ?magick::image_write; write to a file
     ### ?magick::image_info; height and width

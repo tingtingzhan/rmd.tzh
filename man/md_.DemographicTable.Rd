@@ -4,12 +4,14 @@
 \alias{md_.DemographicTable}
 \title{R Markdown Lines for \link[DemographicTable]{DemographicTable}}
 \usage{
-\method{md_}{DemographicTable}(x, xnm, font.size = 9, ...)
+\method{md_}{DemographicTable}(x, xnm, ...)
 }
 \arguments{
-\item{x, xnm, ...}{..}
+\item{x}{a \link[DemographicTable]{DemographicTable}}
 
-\item{font.size}{\link[base]{numeric} scalar}
+\item{xnm}{..}
+
+\item{...}{..}
 }
 \description{
 R Markdown Lines for \link[DemographicTable]{DemographicTable}
@@ -22,3 +24,4 @@ library(DemographicTable); list(
   '`DemographicTable`' = DemographicTable(CO2, groups = 'Type', include = c('conc', 'uptake'))
 ) |> render_(file = 'DemographicTable')
 }
+\keyword{internal}
