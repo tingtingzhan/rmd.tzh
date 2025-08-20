@@ -41,10 +41,10 @@ if (FALSE) { # disabled for ?devtools::check
   library(parallel)
   ct = installed.packages() |>
     rownames() |>
-    mclapply(FUN = citation, mc.cores = detectCores())
+    mclapply(mc.cores = detectCores(), FUN = citation)
   
   tmp = ct |> 
-    mclapply(FUN = format, style = 'text', mc.cores = detectCores()) |>
+    mclapply(mc.cores = detectCores(), FUN = format, style = 'text') |>
     unlist(recursive = TRUE)
   grep('\u2018', tmp) # none!!
   tmp[grep('\u2019', tmp)]
@@ -52,7 +52,7 @@ if (FALSE) { # disabled for ?devtools::check
   
   
   tmp = ct |> 
-    mclapply(FUN = md_.bibentry, mc.cores = detectCores())
+    mclapply(mc.cores = detectCores(), FUN = md_.bibentry)
   tmp[lengths(tmp) > 1L]
 } 
 
