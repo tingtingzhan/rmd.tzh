@@ -65,6 +65,7 @@ md_ <- function(x, ...) {
 #'  )
 #' ) |> render_(file = 'Do Not (Need to) Say Print')
 #' 
+#' @importFrom stats na.omit
 #' @export md_.default
 #' @export
 md_.default <- function(x, xnm, ...) {
@@ -79,6 +80,10 @@ md_.default <- function(x, xnm, ...) {
             htest$method,
             htest$data.name,
             htest$p.value |> label_pvalue_sym(add_p = TRUE)())
+  } else if (inherits(htest, what = 'anova')) {
+    sprintf(fmt = 'ANOVA %s',
+            htest$`Pr(>F)` |> na.omit() |> label_pvalue_sym(add_p = TRUE)())
+    # more than one p-value, should be compatible ..
   } # else NULL
   
   fig_cap <- x |>
