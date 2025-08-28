@@ -103,7 +103,7 @@ md_.default <- function(x, xnm, ...) {
       attr(which = 'fig-width', exact = TRUE) |> 
       sprintf(fmt = '#| fig-width: %.1f'),
     (fig_cap %||% htest_text) |> 
-      sprintf(fmt = '#| fig-cap: %s'),
+      sprintf(fmt = '#| fig-cap: \"%s\"'),
     # end of len-0 compatible
     
     xnm, 
