@@ -10,7 +10,7 @@ Language: en-US
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.5.0)
 Imports: methods, rmarkdown (== 2.29), scales (== 1.4.0)
-Suggests: consort, flextable, 
+Suggests: flextable, 
   ggplot2, GGally, 
   lattice, leaflet, 
   magick, 
