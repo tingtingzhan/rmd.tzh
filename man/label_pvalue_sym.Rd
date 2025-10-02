@@ -16,6 +16,9 @@ Function \code{\link[=label_pvalue_sym]{label_pvalue_sym()}} returns a \link[bas
 Label \eqn{p}-values with significance symbol.
 }
 \details{
+Function \code{\link[=label_pvalue_sym]{label_pvalue_sym()}} is used so extensively,
+therefore tzh keeps it in \pkg{rmd.tzh} instead of \pkg{scales.tzh}.
+
 Pipeline:
 
 Step 1: Apply function \link[scales]{label_pvalue}.
@@ -26,9 +29,6 @@ Step 3: Apply function \link[stats]{symnum} (also see function \link[stats]{prin
 }
 \note{
 Function \link[scales]{label_pvalue} is much prettier and more flexible than function \link[base]{format.pval}.
-
-Function \code{\link[=label_pvalue_sym]{label_pvalue_sym()}} is used so extensively,
-therefore tzh keeps it in \pkg{rmd.tzh} instead of \pkg{scales.tzh}.
 }
 \examples{
 p = c(a = pi^-100, b = .02, c = .05, d = .1, e = .9999, f = NA_real_)

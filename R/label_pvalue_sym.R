@@ -1,5 +1,10 @@
 
 
+#' Function [label_pvalue_sym()] is used so extensively, 
+#' therefore tzh keeps it in \pkg{rmd.tzh} instead of \pkg{scales.tzh}.
+
+
+
 #' @title Label \eqn{p}-values with Significance Symbol
 #' 
 #' @description
@@ -19,9 +24,6 @@
 #' 
 #' @note
 #' Function \link[scales]{label_pvalue} is much prettier and more flexible than function \link[base]{format.pval}.
-#' 
-#' Function [label_pvalue_sym()] is used so extensively, 
-#' therefore tzh keeps it in \pkg{rmd.tzh} instead of \pkg{scales.tzh}.
 #' 
 #' @returns 
 #' Function [label_pvalue_sym()] returns a \link[base]{function}.
