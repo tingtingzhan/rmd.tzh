@@ -76,11 +76,11 @@ md_.default <- function(x, xnm, ...) {
   htest <- x |> 
     attr(which = 'htest', exact = TRUE)
   htest_text <- if (inherits(htest, what = 'htest')) {
-    sprintf(fmt = '%s (%s) %s',
-            htest$method,
-            htest$data.name,
-            htest$p.value |> label_pvalue_sym(add_p = TRUE)())
+    htest |> 
+      md_.htest() |> # missing `xnm` on purpose!!
+      slot(name = '.Data')
   } else if (inherits(htest, what = 'anova')) {
+    # write md_.anova in future!!!
     sprintf(fmt = 'ANOVA %s',
             htest$`Pr(>F)` |> na.omit() |> label_pvalue_sym(add_p = TRUE)())
     # more than one p-value, should be compatible ..
