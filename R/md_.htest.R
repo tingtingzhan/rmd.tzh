@@ -44,7 +44,7 @@ md_.htest <- function(x, xnm, ...) {
     x$p.value |>
       label_pvalue_sym(add_p = TRUE)()
   ) |>
-    new(Class = 'md_lines', package = 'survival')
+    new(Class = 'md_lines')
   
   z2 <- if (!missing(xnm)) {
     c(
