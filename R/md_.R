@@ -76,9 +76,13 @@ md_.default <- function(x, xnm, ...) {
   htest <- x |> 
     attr(which = 'htest', exact = TRUE)
   htest_text <- if (inherits(htest, what = 'htest')) {
+    # \pkg{ggplot.tzh} creates 'ggplot' with htest-attr
     htest |> 
       md_.htest() |> # missing `xnm` on purpose!!
-      slot(name = '.Data')
+      slot(name = '.Data') |>
+      paste(collapse = ' ') |>
+      gsub(pattern = '\n', replacement = '', x = _) |>
+      trimws()
   } else if (inherits(htest, what = 'anova')) {
     # write md_.anova in future!!!
     sprintf(fmt = 'ANOVA %s',
