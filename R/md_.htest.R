@@ -22,7 +22,12 @@ md_.htest <- function(x, xnm, ...) {
       str2lang()
   }, error = identity)
   dnm <- if (inherits(data.name, what = 'error')) {
-    x$data.name
+    if (grepl(pattern = ' by ', x = x$data.name)) {
+      x$data.name |>
+        strsplit(split = ' by ') |>
+        unlist() |>
+        paste0('`', .x = _, '`', collapse = ' by ')
+    } else x$data.name
   } else if (is.symbol(data.name)) {
     x$data.name
   } else if (data.name[[1L]] == 'xtabs') {
